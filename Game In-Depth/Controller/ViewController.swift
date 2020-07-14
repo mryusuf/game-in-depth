@@ -11,14 +11,28 @@ import UIKit
 class ViewController: UIViewController {
 
     @IBOutlet weak var mainBannerCollectionView: UICollectionView!
-    var games: [Game] = []
+    var mainBannerGames: [Game] = []
+    var topGames: [Game] = []
+    var upcomingGames: [Game] = []
+    var mainBannerPosters = [String: UIImage]()
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         ApiManager.shared.fetchPopularGames { (fetchedGames) in
             if let fetchedGames = fetchedGames {
-                self.games = fetchedGames
-                print(self.games)
+                self.mainBannerGames = fetchedGames
+                print(self.mainBannerGames)
+                // TODO: Download image here
+//                for (index,game) in self.mainBannerGames.enumerated() {
+//                    ApiManager.shared.fetchImagePoster(game: game) { (data) in
+//                        if let imageData = data {
+//                            self.mainBannerPosters[game.name] = UIImage(data: imageData)
+//                            DispatchQueue.main.async {
+//                                self.mainBannerCollectionView.reloadItems(at: [IndexPath(item: index, section: 0)])
+//                            }
+//                        }
+//                    }
+//                }
                 DispatchQueue.main.async {
                     self.mainBannerCollectionView.reloadData()
                 }
@@ -32,23 +46,7 @@ class ViewController: UIViewController {
         mainBannerCollectionView.tag = 0
         let nib = UINib(nibName: "MainBannerCollectionViewCell", bundle: nil)
         mainBannerCollectionView.register(nib, forCellWithReuseIdentifier: "MainBannerCellIdentifier")
-//        if let flowLayout = self.mainBannerCollectionView?.collectionViewLayout as? UICollectionViewFlowLayout {
-//            flowLayout.estimatedItemSize = CGSize(width: 414, height: 200)
-//        }
     }
-    
-//    func startDownloadPoster(game:Game, indexPath: IndexPath) {
-//        ApiManager.shared.fetchImagePoster(game: game) { (data) in
-//            if let imageData = data {
-//                DispatchQueue.main.async {
-//                    self.posterImageView.image = UIImage(data: imageData)
-//                }
-//            } else {
-//                print("MainBannerCollectionViewCell: error attaching image")
-//            }
-//        }
-//    }
-
 
 }
 
@@ -58,34 +56,28 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return games.count
+        return mainBannerGames.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainBannerCellIdentifier", for: indexPath) as? MainBannerCollectionViewCell
-//        cell.configureImageData(game: games[indexPath.row])
-        let game = games[indexPath.row]
-        if game.download == .new {
+        let game = mainBannerGames[indexPath.row]
+        cell?.posterImageView.image = mainBannerPosters[game.name]
 
-            cell?.posterImageView.image = nil
+        if game.download == .new {
             ApiManager.shared.fetchImagePoster(game: game) { (data) in
                 if let imageData = data {
-//                    print(imageData)
-
-                    print("ViewController: \(game.backgroundImage)")
+                    let image = UIImage(data: imageData)
                     DispatchQueue.main.async {
-                        let image = UIImage(data: imageData)
-                        cell?.posterImageView.image = image
                         print("Image size: \(String(describing: image?.size))")
-
-                        self.games[indexPath.row].download = .downloaded
-    //                    cell.configureImageData(data: imageData)
-    //                    self.mainBannerCollectionView.reloadItems(at: [indexPath])
+                        self.mainBannerPosters[game.name] = image
+                        self.mainBannerGames[indexPath.row].download = .downloaded
+                        self.mainBannerCollectionView.reloadItems(at: [indexPath])
                     }
                 } else {
                     print("MainBannerCollectionViewCell: error attaching image")
                     DispatchQueue.main.async {
-                        self.games[indexPath.row].download = .failed
+                        self.mainBannerGames[indexPath.row].download = .failed
                     }
                 }
             }
@@ -101,10 +93,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func collectionView(_ collectionView: UICollectionView,
                         layout collectionViewLayout: UICollectionViewLayout,
                         sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        cell.configureCell(name: names[indexPath.row])
-        
-//        cell.setNeedsLayout()
-//        cell.layoutIfNeeded()
         let size: CGSize = self.view.frame.size
         print("w: \(size.width)")
         return CGSize(width: size.width, height: 200)

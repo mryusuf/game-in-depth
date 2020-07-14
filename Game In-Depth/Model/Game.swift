@@ -16,6 +16,7 @@ struct Game: Codable {
     let name: String
     let backgroundImage: URL
     var download: DownloadState
+    var backgroundImageDownloaded: UIImage
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
@@ -23,6 +24,7 @@ struct Game: Codable {
         
         name = try container.decode(String.self, forKey: .name)
         backgroundImage = URL(string: backgroundImageString)!
+        backgroundImageDownloaded = UIImage()
         download = .new
     }
 

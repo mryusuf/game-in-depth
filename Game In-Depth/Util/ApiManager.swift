@@ -18,7 +18,7 @@ class ApiManager {
         components.queryItems = [
             URLQueryItem(name: "dates", value: "2020-01-01,2020-12-31"),
             URLQueryItem(name: "ordering", value: "-added"),
-            URLQueryItem(name: "page_size", value: "3")
+            URLQueryItem(name: "page_size", value: "5")
             
         ]
         
