@@ -13,27 +13,38 @@ struct Games: Codable {
 }
 
 struct Game: Codable {
+    let id: Int
     let name: String
     let backgroundImage: URL
-    var download: DownloadState
+    let metacritic: Int?
+    var imageDownloadstate: ImageDownloadStates
     var backgroundImageDownloaded: UIImage
     
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let backgroundImageString = try container.decode(String.self, forKey: .backgroundImage)
         
+        id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         backgroundImage = URL(string: backgroundImageString)!
+        // Use decodeIfPresent to prevent null error
+        metacritic = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 101
         backgroundImageDownloaded = UIImage()
-        download = .new
+        imageDownloadstate = .new
     }
 
     enum CodingKeys: String, CodingKey {
-        case name
+        case id, name, metacritic
         case backgroundImage = "background_image"
     }
 }
 
-enum DownloadState {
+enum ImageDownloadStates {
     case new, downloaded, failed
+}
+
+enum HomeCollectionViewTag: Int {
+    case mainBanner = 0
+    case upcommingBanner = 1
+    case topBanner = 2
 }
