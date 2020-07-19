@@ -16,7 +16,7 @@ struct Game: Codable {
     let id: Int
     let name: String
     let backgroundImage: URL
-    let metacritic: Int?
+    let metacritic: String?
     var imageDownloadstate: ImageDownloadStates
     var backgroundImageDownloaded: UIImage
     
@@ -28,7 +28,12 @@ struct Game: Codable {
         name = try container.decode(String.self, forKey: .name)
         backgroundImage = URL(string: backgroundImageString)!
         // Use decodeIfPresent to prevent null error
-        metacritic = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 101
+        let metacriticScore = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 0
+        if metacriticScore == 0 {
+            metacritic = "Not Available"
+        } else {
+            metacritic = metacriticScore.description
+        }
         backgroundImageDownloaded = UIImage()
         imageDownloadstate = .new
     }

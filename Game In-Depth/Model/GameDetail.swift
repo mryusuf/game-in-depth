@@ -12,12 +12,12 @@ struct GameDetail: Codable {
     let id: Int
     let name: String
     let description_raw: String
-    let metacritic: Int?
+    let metacritic: String?
     let released: String
     let developers: [Developer]
     let publishers: [Publisher]
     let genres: [Genre]
-    let clip: Clip
+//    let clip: Clip
     var backgroundImageDownloaded: UIImage
     var imageDownloadstate: ImageDownloadStates
     
@@ -27,18 +27,23 @@ struct GameDetail: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         description_raw = try container.decode(String.self, forKey: .description_raw)
-        metacritic = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 101
+        let metacriticScore = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 0
+        if metacriticScore == 0 {
+            metacritic = "Not Available"
+        } else {
+            metacritic = metacriticScore.description
+        }
         released = try container.decode(String.self, forKey: .released)
         developers = try container.decode([Developer].self, forKey: .developers)
         publishers = try container.decode([Publisher].self, forKey: .publishers)
         genres = try container.decode([Genre].self, forKey: .genres)
-        clip = try container.decode(Clip.self, forKey: .clip)
+//        clip = try container.decode(Clip.self, forKey: .clip)
         backgroundImageDownloaded = UIImage()
         imageDownloadstate = .new
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, description_raw, released, developers, publishers, genres, clip
+        case id, name, metacritic, description_raw, released, developers, publishers, genres
     }
 }
 

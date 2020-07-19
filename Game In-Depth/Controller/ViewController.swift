@@ -162,7 +162,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print(indexPath.row)
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as! DetailGameViewController
+        let game = mainBannerGames[indexPath.row]
+        vc.gameID = game.id
+        vc.detailPosterImage = mainBannerPosters[game.name] ?? UIImage()
+        print(mainBannerPosters[game.name]!.size)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func collectionView(_ collectionView: UICollectionView,

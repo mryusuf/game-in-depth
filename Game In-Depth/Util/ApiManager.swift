@@ -138,15 +138,15 @@ class ApiManager {
     func fetchDetailGames(id: Int, completionHandler: @escaping (GameDetail?) -> Void) {
 //        let requestUrl = baseURL + "games/\(id)"
         var components = URLComponents(string: baseURL)!
-        components.path = "/api/games"
-        components.path = String(id)
+        components.path = "/api/games/\(String(id))"
+//        components.path = String(id)
 //        components.queryItems = [
 //            URLQueryItem(name: "dates", value: "2020-01-01,2020-07-01"),
 //            URLQueryItem(name: "ordering", value: "-added"),
 //            URLQueryItem(name: "page_size", value: "5")
 //
 //        ]
-        
+        print(components.url?.absoluteString)
         let request = URLRequest(url: components.url!)
         
         let session = URLSession.shared
