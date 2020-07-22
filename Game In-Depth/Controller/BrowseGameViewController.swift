@@ -87,25 +87,16 @@ extension BrowseGameViewController: UISearchResultsUpdating {
     func updateSearchResults(for searchController: UISearchController) {
         guard let queryText = searchController.searchBar.text, queryText.isEmpty == false else { return }
         
-        // Cancel previous task if any
         self.searchTask?.cancel()
-
-        // Replace previous task with a new one
         let task = DispatchWorkItem { [weak self] in
             self?.query = queryText
             self?.pageSize = 10
             self?.page = 1
-            //        isFetching = true
-            //        ApiManager.shared.fetchSearchGames(stop: true, query: query, pageSize: pageSize, page: page) {_ in
-            //
-            //        }
             self?.gameResults = []
             self?.searchCollectionView.reloadData()
             self?.fetchGames(query: queryText)
         }
         self.searchTask = task
-
-        // Execute task in 0.75 seconds (if not cancelled !)
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: task)
 
         
@@ -153,8 +144,6 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
             cell?.listGameImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
             cell?.listGameImageView.translatesAutoresizingMaskIntoConstraints = false
             cell?.listGameImageView.image = gameResultPosters[game.name]
-    //
-    //        print("W: \(cell?.listGameImageView.frame.width), H: \(cell?.listGameImageView.frame.height)")
             cell?.listGameNameLabel.text = game.name
             cell?.listGameRating.text = game.metacritic?.description
             cell?.listGameReleaseDate.text = game.released

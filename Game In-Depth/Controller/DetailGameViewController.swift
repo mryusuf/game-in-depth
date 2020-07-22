@@ -25,6 +25,7 @@ class DetailGameViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
+        navigationController?.isNavigationBarHidden = false
         self.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: .default)
         self.navigationController?.navigationBar.shadowImage = UIImage()
         self.navigationController?.navigationBar.isTranslucent = true
@@ -68,6 +69,7 @@ class DetailGameViewController: UIViewController {
                             } else {
                                 print("Detail: error attaching image")
                                 DispatchQueue.main.async {
+                                    self.detailPosterImage = UIImage(systemName: "nosign")!
                                     self.detailLoading.stopAnimating()
                                     self.setImage()
                                 }

@@ -57,7 +57,6 @@ class ListGameViewController: UIViewController {
                         }
                         self.page += 1
                         self.isFetching = false
-//                        tableView.reloadRows(at: indexPathsToReload, with: .automatic)
                     }
                 }
             }
@@ -134,8 +133,6 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
             cell?.listGameImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
             cell?.listGameImageView.translatesAutoresizingMaskIntoConstraints = false
             cell?.listGameImageView.image = gamePosters[game.name]
-    //
-    //        print("W: \(cell?.listGameImageView.frame.width), H: \(cell?.listGameImageView.frame.height)")
             cell?.listGameNameLabel.text = game.name
             cell?.listGameRating.text = game.metacritic?.description
             cell?.listGameReleaseDate.text = game.released
@@ -153,6 +150,7 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
                     } else {
                         print("UpcommingCollectionView: error attaching image")
                         DispatchQueue.main.async {
+                            self.gamePosters[game.name] = UIImage(systemName: "nosign")
                             self.listGames[indexPath.row].imageDownloadstate = .failed
                         }
                     }

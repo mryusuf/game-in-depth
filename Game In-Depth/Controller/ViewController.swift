@@ -46,7 +46,6 @@ class ViewController: UIViewController {
         ApiManager.shared.fetchHighestRatedGames(pageSize: 5){ (fetchedGames) in
             if let fetchedGames = fetchedGames {
                 self.topGames = fetchedGames.results!
-                print(self.topGames)
                 DispatchQueue.main.async {
                     self.topGamesCollectionView.reloadData()
                 }
@@ -132,18 +131,16 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     if let imageData = data {
                         let image = UIImage(data: imageData)
                         DispatchQueue.main.async {
-                            //                        print("Image size: \(String(describing: image?.size))")
                             self.mainBannerPosters[game.name] = image
                             self.mainBannerGames[indexPath.row].imageDownloadstate = .downloaded
                             self.mainBannerCollectionView.reloadItems(at: [indexPath])
                             cell?.posterLoading.stopAnimating()
                             cell?.posterLoading.isHidden = true
-//                            self.upcomingGamesCollectionView.reloadItems(at: [indexPath])
-//                            self.topGamesCollectionView.reloadItems(at: [indexPath])
                         }
                     } else {
                         print("MainBannerCollectionViewCell: error attaching image")
                         DispatchQueue.main.async {
+                            self.mainBannerPosters[game.name] = UIImage(systemName: "nosign")
                             self.mainBannerGames[indexPath.row].imageDownloadstate = .failed
                             cell?.posterLoading.stopAnimating()
                             cell?.posterLoading.isHidden = true
@@ -168,7 +165,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     if let imageData = data {
                         let image = UIImage(data: imageData)
                         DispatchQueue.main.async {
-                            //                        print("Image size: \(String(describing: image?.size))")
 
                             cell?.subPosterLoading.stopAnimating()
                             cell?.subPosterLoading.isHidden = true
@@ -179,6 +175,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     } else {
                         print("UpcommingCollectionView: error attaching image")
                         DispatchQueue.main.async {
+                            self.upcommingPosters[game.name] = UIImage(systemName: "nosign")
                             cell?.subPosterLoading.stopAnimating()
                             cell?.subPosterLoading.isHidden = true
                             self.upcomingGames[indexPath.row].imageDownloadstate = .failed
@@ -202,7 +199,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     if let imageData = data {
                         let image = UIImage(data: imageData)
                         DispatchQueue.main.async {
-                            //                        print("Image size: \(String(describing: image?.size))")
                             cell?.subPosterLoading.stopAnimating()
                             cell?.subPosterLoading.isHidden = true
                             self.topPosters[game.name] = image
@@ -212,6 +208,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     } else {
                         print("TopCollectionView: error attaching image")
                         DispatchQueue.main.async {
+                            self.topPosters[game.name] = UIImage(systemName: "nosign")
                             cell?.subPosterLoading.stopAnimating()
                             cell?.subPosterLoading.isHidden = true
                             self.topGames[indexPath.row].imageDownloadstate = .failed
@@ -247,9 +244,8 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             vc.detailPosterImage = topPosters[game?.name ?? ""] ?? UIImage()
             
         }
-        
+        self.title = "Back"
         vc.gameID = game?.id ?? 0
-//        print(mainBannerPosters[game.name]!.size)
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
