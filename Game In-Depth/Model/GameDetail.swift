@@ -13,7 +13,8 @@ struct GameDetail: Codable {
     let name: String
     let description_raw: String
     let metacritic: String?
-    let released: String
+    let released: String?
+    let backgroundImage: URL
     let developers: [Developer]
     let publishers: [Publisher]
     let genres: [Genre]
@@ -27,6 +28,9 @@ struct GameDetail: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         description_raw = try container.decode(String.self, forKey: .description_raw)
+        
+        let backgroundImageString = try container.decode(String.self, forKey: .backgroundImage)
+        backgroundImage = URL(string: backgroundImageString)!
         let metacriticScore = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 0
         if metacriticScore == 0 {
             metacritic = "Not Available"
@@ -44,6 +48,7 @@ struct GameDetail: Codable {
     
     enum CodingKeys: String, CodingKey {
         case id, name, metacritic, description_raw, released, developers, publishers, genres
+        case backgroundImage = "background_image"
     }
 }
 

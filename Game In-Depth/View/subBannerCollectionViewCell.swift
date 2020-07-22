@@ -13,6 +13,7 @@ class subBannerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var subPosterImageView: UIImageView!
     @IBOutlet weak var metacriticRatingLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
+    @IBOutlet weak var subPosterLoading: UIActivityIndicatorView!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

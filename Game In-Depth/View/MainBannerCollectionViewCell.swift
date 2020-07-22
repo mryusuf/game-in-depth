@@ -11,7 +11,7 @@ import UIKit
 class MainBannerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var posterImageView: UIImageView!
-    
+    @IBOutlet weak var posterLoading: UIActivityIndicatorView!
     override func awakeFromNib() {
         super.awakeFromNib()
     }

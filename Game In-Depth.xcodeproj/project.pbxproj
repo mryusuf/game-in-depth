@@ -10,7 +10,13 @@
 		8240DE4A24BDCDA30014FA53 /* subBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8240DE4824BDCDA30014FA53 /* subBannerCollectionViewCell.swift */; };
 		8240DE4B24BDCDA30014FA53 /* subBannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8240DE4924BDCDA30014FA53 /* subBannerCollectionViewCell.xib */; };
 		8240DE4D24BDFA720014FA53 /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8240DE4C24BDFA720014FA53 /* GameDetail.swift */; };
+		82419AF524C7EE3D0030D3F6 /* BrowseGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82419AF424C7EE3D0030D3F6 /* BrowseGameViewController.swift */; };
+		82419AF724C81CEB0030D3F6 /* AboutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82419AF624C81CEB0030D3F6 /* AboutView.swift */; };
+		82419AF924C81D520030D3F6 /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82419AF824C81D520030D3F6 /* AboutViewController.swift */; };
 		8262B23724C4364800178B71 /* DetailGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8262B23624C4364800178B71 /* DetailGameViewController.swift */; };
+		8262B23924C4988D00178B71 /* ListGameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8262B23824C4988D00178B71 /* ListGameViewController.swift */; };
+		8262B23C24C49C7A00178B71 /* ListGameCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8262B23A24C49C7A00178B71 /* ListGameCollectionViewCell.swift */; };
+		8262B23D24C49C7A00178B71 /* ListGameCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8262B23B24C49C7A00178B71 /* ListGameCollectionViewCell.xib */; };
 		82CDD97424BABFF800A9E195 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CDD97324BABFF800A9E195 /* AppDelegate.swift */; };
 		82CDD97624BABFF800A9E195 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CDD97524BABFF800A9E195 /* SceneDelegate.swift */; };
 		82CDD97824BABFF800A9E195 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 82CDD97724BABFF800A9E195 /* ViewController.swift */; };
@@ -27,7 +33,13 @@
 		8240DE4824BDCDA30014FA53 /* subBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = subBannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8240DE4924BDCDA30014FA53 /* subBannerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = subBannerCollectionViewCell.xib; sourceTree = "<group>"; };
 		8240DE4C24BDFA720014FA53 /* GameDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetail.swift; sourceTree = "<group>"; };
+		82419AF424C7EE3D0030D3F6 /* BrowseGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseGameViewController.swift; sourceTree = "<group>"; };
+		82419AF624C81CEB0030D3F6 /* AboutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutView.swift; sourceTree = "<group>"; };
+		82419AF824C81D520030D3F6 /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
 		8262B23624C4364800178B71 /* DetailGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailGameViewController.swift; sourceTree = "<group>"; };
+		8262B23824C4988D00178B71 /* ListGameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGameViewController.swift; sourceTree = "<group>"; };
+		8262B23A24C49C7A00178B71 /* ListGameCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListGameCollectionViewCell.swift; sourceTree = "<group>"; };
+		8262B23B24C49C7A00178B71 /* ListGameCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ListGameCollectionViewCell.xib; sourceTree = "<group>"; };
 		82CDD97024BABFF800A9E195 /* Game In-Depth.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Game In-Depth.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		82CDD97324BABFF800A9E195 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		82CDD97524BABFF800A9E195 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -90,6 +102,9 @@
 			children = (
 				82CDD97724BABFF800A9E195 /* ViewController.swift */,
 				8262B23624C4364800178B71 /* DetailGameViewController.swift */,
+				8262B23824C4988D00178B71 /* ListGameViewController.swift */,
+				82419AF424C7EE3D0030D3F6 /* BrowseGameViewController.swift */,
+				82419AF824C81D520030D3F6 /* AboutViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -102,6 +117,9 @@
 				82CDD98A24BAC27100A9E195 /* MainBannerCollectionViewCell.xib */,
 				8240DE4824BDCDA30014FA53 /* subBannerCollectionViewCell.swift */,
 				8240DE4924BDCDA30014FA53 /* subBannerCollectionViewCell.xib */,
+				8262B23A24C49C7A00178B71 /* ListGameCollectionViewCell.swift */,
+				8262B23B24C49C7A00178B71 /* ListGameCollectionViewCell.xib */,
+				82419AF624C81CEB0030D3F6 /* AboutView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -181,6 +199,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8262B23D24C49C7A00178B71 /* ListGameCollectionViewCell.xib in Resources */,
 				82CDD98024BABFFB00A9E195 /* LaunchScreen.storyboard in Resources */,
 				82CDD97D24BABFFB00A9E195 /* Assets.xcassets in Resources */,
 				82CDD98C24BAC27100A9E195 /* MainBannerCollectionViewCell.xib in Resources */,
@@ -196,12 +215,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				82419AF524C7EE3D0030D3F6 /* BrowseGameViewController.swift in Sources */,
 				8240DE4D24BDFA720014FA53 /* GameDetail.swift in Sources */,
+				8262B23C24C49C7A00178B71 /* ListGameCollectionViewCell.swift in Sources */,
 				82CDD97824BABFF800A9E195 /* ViewController.swift in Sources */,
+				82419AF724C81CEB0030D3F6 /* AboutView.swift in Sources */,
 				82CDD99224BACBFD00A9E195 /* Game.swift in Sources */,
 				82CDD98F24BACB1A00A9E195 /* ApiManager.swift in Sources */,
+				8262B23924C4988D00178B71 /* ListGameViewController.swift in Sources */,
 				82CDD97424BABFF800A9E195 /* AppDelegate.swift in Sources */,
 				8262B23724C4364800178B71 /* DetailGameViewController.swift in Sources */,
+				82419AF924C81D520030D3F6 /* AboutViewController.swift in Sources */,
 				82CDD97624BABFF800A9E195 /* SceneDelegate.swift in Sources */,
 				8240DE4A24BDCDA30014FA53 /* subBannerCollectionViewCell.swift in Sources */,
 				82CDD98B24BAC27100A9E195 /* MainBannerCollectionViewCell.swift in Sources */,

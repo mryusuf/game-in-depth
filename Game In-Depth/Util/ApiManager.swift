@@ -49,14 +49,15 @@ class ApiManager {
         dataTask.resume()
     }
     
-    func fetchAnticipatedGames(completionHandler: @escaping ([Game]?) -> Void) {
+    func fetchAnticipatedGames(pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
         //        let requestUrl = baseURL + "games"
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games"
         components.queryItems = [
             URLQueryItem(name: "dates", value: "2020-07-01,2021-12-31"),
             URLQueryItem(name: "ordering", value: "-added"),
-            URLQueryItem(name: "page_size", value: "5")
+            URLQueryItem(name: "page_size", value: pageSize.description),
+            URLQueryItem(name: "page", value: page.description)
         ]
         
         let request = URLRequest(url: components.url!)
@@ -72,7 +73,7 @@ class ApiManager {
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
                     
-                    completionHandler(fetchedGames.results)
+                    completionHandler(fetchedGames)
                     
                 } catch  {
                     print(error.localizedDescription)
@@ -84,13 +85,14 @@ class ApiManager {
         dataTask.resume()
     }
     
-    func fetchHighestRatedGames(completionHandler: @escaping ([Game]?) -> Void) {
+    func fetchHighestRatedGames(pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
         //        let requestUrl = baseURL + "games"
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games"
         components.queryItems = [
-            URLQueryItem(name: "ordering", value: "-rating"),
-            URLQueryItem(name: "page_size", value: "5")
+            URLQueryItem(name: "ordering", value: "--rating"),
+            URLQueryItem(name: "page_size", value: pageSize.description),
+            URLQueryItem(name: "page", value: page.description)
             
         ]
         
@@ -107,7 +109,7 @@ class ApiManager {
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
                     
-                    completionHandler(fetchedGames.results)
+                    completionHandler(fetchedGames)
                     
                 } catch  {
                     print(error.localizedDescription)
@@ -119,10 +121,10 @@ class ApiManager {
         dataTask.resume()
     }
     
-    func fetchImagePoster(game: Game, completionHandler: @escaping (Data?) -> Void) {
+    func fetchImagePoster(imageURL: URL, completionHandler: @escaping (Data?) -> Void) {
         let session = URLSession.shared
         
-        let dataTask = session.dataTask(with: game.backgroundImage) { (data, response, error) in
+        let dataTask = session.dataTask(with: imageURL) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
                 print("error fetching image")
@@ -172,7 +174,7 @@ class ApiManager {
         dataTask.resume()
     }
     
-    func fetchSearchGames(query: String, completionHandler: @escaping ([Game]?) -> Void) {
+    func fetchSearchGames(stop:Bool = false,query: String, pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
     //        let requestUrl = baseURL + "games/\(id)"
             var components = URLComponents(string: baseURL)!
             components.path = "/api/games"
@@ -196,7 +198,7 @@ class ApiManager {
                     do {
                         let fetchedGames = try decoder.decode(Games.self, from: data)
                         
-                        completionHandler(fetchedGames.results)
+                        completionHandler(fetchedGames)
                         
                     } catch  {
                         print(error.localizedDescription)
@@ -205,6 +207,10 @@ class ApiManager {
                     
                 }
             }
+        if !stop {
             dataTask.resume()
+        } else {
+            dataTask.cancel()
         }
+    }
 }

@@ -41,14 +41,20 @@
                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="Bie-vY-nQi">
+                        <rect key="frame" x="80" y="82" width="20" height="20"/>
+                        <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </activityIndicatorView>
                 </subviews>
             </view>
             <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
                 <constraint firstItem="leu-jG-tFT" firstAttribute="top" secondItem="Mpz-Pv-Zjp" secondAttribute="bottom" constant="5" id="CEb-OH-65I"/>
                 <constraint firstItem="ukq-3O-qMt" firstAttribute="top" secondItem="leu-jG-tFT" secondAttribute="bottom" constant="10" id="Ept-Nm-53b"/>
+                <constraint firstItem="Bie-vY-nQi" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="NwR-7Y-yfM"/>
                 <constraint firstAttribute="bottom" secondItem="ukq-3O-qMt" secondAttribute="bottom" constant="20" id="UWf-ly-mp7"/>
                 <constraint firstAttribute="trailing" secondItem="ukq-3O-qMt" secondAttribute="trailing" constant="20" id="Z1G-oN-Sbn"/>
+                <constraint firstItem="Bie-vY-nQi" firstAttribute="top" secondItem="Mpz-Pv-Zjp" secondAttribute="bottom" constant="-98" id="ZwG-IE-kMk"/>
                 <constraint firstAttribute="trailing" secondItem="leu-jG-tFT" secondAttribute="trailing" constant="100" id="bDK-ba-Xg0"/>
                 <constraint firstItem="leu-jG-tFT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="cmW-RN-8OO"/>
                 <constraint firstItem="Mpz-Pv-Zjp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="eD6-N1-YJn"/>
@@ -62,6 +68,7 @@
                 <outlet property="metacriticRatingLabel" destination="leu-jG-tFT" id="WCg-bw-RBd"/>
                 <outlet property="nameLabel" destination="ukq-3O-qMt" id="aS6-Es-Ad0"/>
                 <outlet property="subPosterImageView" destination="Mpz-Pv-Zjp" id="ivQ-4k-r9U"/>
+                <outlet property="subPosterLoading" destination="Bie-vY-nQi" id="S0c-ug-WEO"/>
             </connections>
             <point key="canvasLocation" x="-94.20289855072464" y="205.91517857142856"/>
         </collectionViewCell>
