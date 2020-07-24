@@ -10,10 +10,10 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="subBannerCellIdentifier" id="gTV-IL-0wX" customClass="subBannerCollectionViewCell" customModule="Game_In_Depth" customModuleProvider="target">
-            <rect key="frame" x="0.0" y="0.0" width="180" height="285"/>
+            <rect key="frame" x="0.0" y="0.0" width="180" height="300"/>
             <autoresizingMask key="autoresizingMask"/>
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
-                <rect key="frame" x="0.0" y="0.0" width="180" height="285"/>
+                <rect key="frame" x="0.0" y="0.0" width="180" height="300"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Mpz-Pv-Zjp">
@@ -30,13 +30,16 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" text="Rise of the Tomb Raider" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ukq-3O-qMt">
-                        <rect key="frame" x="20" y="207" width="140" height="58"/>
-                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                        <rect key="frame" x="0.0" y="240" width="160" height="60"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="16"/>
                         <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rating" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="leu-jG-tFT">
-                        <rect key="frame" x="20" y="185" width="60" height="12"/>
+                        <rect key="frame" x="0.0" y="188" width="160" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="9H8-RM-9Z6"/>
+                        </constraints>
                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                         <color key="textColor" cocoaTouchSystemColor="lightTextColor"/>
                         <nil key="highlightedColor"/>
@@ -45,21 +48,33 @@
                         <rect key="frame" x="80" y="82" width="20" height="20"/>
                         <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </activityIndicatorView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="tiI-7M-wq2">
+                        <rect key="frame" x="0.0" y="210" width="160" height="14"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="14" id="tKD-gd-dUJ"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="10"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                 </subviews>
             </view>
-            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
             <constraints>
-                <constraint firstItem="leu-jG-tFT" firstAttribute="top" secondItem="Mpz-Pv-Zjp" secondAttribute="bottom" constant="5" id="CEb-OH-65I"/>
-                <constraint firstItem="ukq-3O-qMt" firstAttribute="top" secondItem="leu-jG-tFT" secondAttribute="bottom" constant="10" id="Ept-Nm-53b"/>
+                <constraint firstItem="ukq-3O-qMt" firstAttribute="top" secondItem="tiI-7M-wq2" secondAttribute="bottom" constant="16" id="57l-Pe-CmI"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="bottom" secondItem="ukq-3O-qMt" secondAttribute="bottom" id="5no-lf-fW6"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="leu-jG-tFT" secondAttribute="trailing" constant="20" id="8PO-ee-Hyn"/>
                 <constraint firstItem="Bie-vY-nQi" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="NwR-7Y-yfM"/>
-                <constraint firstAttribute="bottom" secondItem="ukq-3O-qMt" secondAttribute="bottom" constant="20" id="UWf-ly-mp7"/>
+                <constraint firstItem="leu-jG-tFT" firstAttribute="top" secondItem="Mpz-Pv-Zjp" secondAttribute="bottom" constant="8" id="UzN-9I-Aw9"/>
                 <constraint firstAttribute="trailing" secondItem="ukq-3O-qMt" secondAttribute="trailing" constant="20" id="Z1G-oN-Sbn"/>
                 <constraint firstItem="Bie-vY-nQi" firstAttribute="top" secondItem="Mpz-Pv-Zjp" secondAttribute="bottom" constant="-98" id="ZwG-IE-kMk"/>
-                <constraint firstAttribute="trailing" secondItem="leu-jG-tFT" secondAttribute="trailing" constant="100" id="bDK-ba-Xg0"/>
-                <constraint firstItem="leu-jG-tFT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="cmW-RN-8OO"/>
+                <constraint firstItem="leu-jG-tFT" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="cmW-RN-8OO"/>
                 <constraint firstItem="Mpz-Pv-Zjp" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="eD6-N1-YJn"/>
                 <constraint firstItem="Mpz-Pv-Zjp" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="gZx-Qi-8Mz"/>
-                <constraint firstItem="ukq-3O-qMt" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="20" id="keT-sn-O5b"/>
+                <constraint firstItem="tiI-7M-wq2" firstAttribute="top" secondItem="leu-jG-tFT" secondAttribute="bottom" constant="8" id="gf5-Im-Pkk"/>
+                <constraint firstItem="tiI-7M-wq2" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="h4N-Qi-Tii"/>
+                <constraint firstItem="ukq-3O-qMt" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="keT-sn-O5b"/>
+                <constraint firstItem="ZTg-uK-7eu" firstAttribute="trailing" secondItem="tiI-7M-wq2" secondAttribute="trailing" constant="20" id="tKb-hC-dbL"/>
                 <constraint firstAttribute="trailing" secondItem="Mpz-Pv-Zjp" secondAttribute="trailing" id="yAR-FH-IE5"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
@@ -67,10 +82,11 @@
             <connections>
                 <outlet property="metacriticRatingLabel" destination="leu-jG-tFT" id="WCg-bw-RBd"/>
                 <outlet property="nameLabel" destination="ukq-3O-qMt" id="aS6-Es-Ad0"/>
+                <outlet property="releaseLabel" destination="tiI-7M-wq2" id="kC5-mz-Fpu"/>
                 <outlet property="subPosterImageView" destination="Mpz-Pv-Zjp" id="ivQ-4k-r9U"/>
                 <outlet property="subPosterLoading" destination="Bie-vY-nQi" id="S0c-ug-WEO"/>
             </connections>
-            <point key="canvasLocation" x="-94.20289855072464" y="205.91517857142856"/>
+            <point key="canvasLocation" x="-136.23188405797103" y="214.95535714285714"/>
         </collectionViewCell>
     </objects>
 </document>

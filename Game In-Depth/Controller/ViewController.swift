@@ -15,6 +15,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var topGamesCollectionView: UICollectionView!
     @IBOutlet weak var upcomingMoreButton: UIButton!
     @IBOutlet weak var topMoreButton: UIButton!
+    @IBOutlet weak var homeScrollView: UIScrollView!
+    let loadingIndicatorView = UIActivityIndicatorView(style: .large)
     
     var mainBannerGames: [Game] = []
     var topGames: [Game] = []
@@ -27,10 +29,14 @@ class ViewController: UIViewController {
         super.viewWillAppear(true)
         self.title = "Popular Games"
         self.navigationController?.hidesBarsOnSwipe = true
+        showLoadingIndicator()
+        homeScrollView.isHidden = true
         ApiManager.shared.fetchPopularGames { (fetchedGames) in
             if let fetchedGames = fetchedGames {
                 self.mainBannerGames = fetchedGames
                 DispatchQueue.main.async {
+                    self.homeScrollView.isHidden = false
+                    self.loadingIndicatorView.stopAnimating()
                     self.mainBannerCollectionView.reloadData()
                 }
             }
@@ -39,6 +45,8 @@ class ViewController: UIViewController {
             if let fetchedGames = fetchedGames {
                 self.upcomingGames = fetchedGames.results!
                 DispatchQueue.main.async {
+                    self.homeScrollView.isHidden = false
+                    self.loadingIndicatorView.stopAnimating()
                     self.upcomingGamesCollectionView.reloadData()
                 }
             }
@@ -47,6 +55,8 @@ class ViewController: UIViewController {
             if let fetchedGames = fetchedGames {
                 self.topGames = fetchedGames.results!
                 DispatchQueue.main.async {
+                    self.homeScrollView.isHidden = false
+                    self.loadingIndicatorView.stopAnimating()
                     self.topGamesCollectionView.reloadData()
                 }
             }
@@ -100,6 +110,13 @@ class ViewController: UIViewController {
         vc.title = "Top Games"
         self.navigationController?.pushViewController(vc, animated: true)
     }
+    func showLoadingIndicator() {
+        loadingIndicatorView.center = self.view.center
+        loadingIndicatorView.color = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        loadingIndicatorView.hidesWhenStopped = true
+        self.view.addSubview(loadingIndicatorView)
+        loadingIndicatorView.startAnimating()
+    }
 }
 
 extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
@@ -151,14 +168,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                 cell?.posterLoading.stopAnimating()
                 cell?.posterLoading.isHidden = true
             }
-            return cell!
+            return cell ?? UICollectionViewCell()
         } else  if collectionView.tag == HomeCollectionViewTag.upcommingBanner.rawValue {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "subBannerCellIdentifier", for: indexPath) as? subBannerCollectionViewCell
             let game = upcomingGames[indexPath.row]
             cell?.subPosterImageView.image = upcommingPosters[game.name]
             cell?.nameLabel.text = game.name
-            cell?.metacriticRatingLabel.text = game.metacritic?.description
-            
+            cell?.metacriticRatingLabel.text = "rating: \(game.rating?.description ?? "")"
+            cell?.releaseLabel.text = "released: \(game.released?.description ?? "")"
             if game.imageDownloadstate == .new {
                 cell?.subPosterLoading.startAnimating()
                 ApiManager.shared.fetchImagePoster(imageURL: (game.backgroundImage ?? URL(string: ""))!) { (data) in
@@ -186,13 +203,14 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                 cell?.subPosterLoading.stopAnimating()
                 cell?.subPosterLoading.isHidden = true
             }
-            return cell!
+            return cell ?? UICollectionViewCell()
         } else  if collectionView.tag == HomeCollectionViewTag.topBanner.rawValue {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "subBannerCellIdentifier", for: indexPath) as? subBannerCollectionViewCell
             let game = topGames[indexPath.row]
             cell?.subPosterImageView.image = topPosters[game.name]
             cell?.nameLabel.text = game.name
-            cell?.metacriticRatingLabel.text = game.metacritic?.description
+            cell?.metacriticRatingLabel.text = "rating: \(game.rating?.description ?? "")"
+            cell?.releaseLabel.text = "released: \(game.released?.description ?? "")"
             if game.imageDownloadstate == .new {
                 cell?.subPosterLoading.startAnimating()
                 ApiManager.shared.fetchImagePoster(imageURL: game.backgroundImage!) { (data) in
@@ -219,7 +237,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                 cell?.subPosterLoading.stopAnimating()
                 cell?.subPosterLoading.isHidden = true
             }
-            return cell!
+            return cell ?? UICollectionViewCell()
         }
         
         

@@ -18,6 +18,7 @@ struct Game: Codable {
     let name: String
     let backgroundImage: URL?
     let metacritic: String?
+    let rating: Float?
     let released: String?
     var imageDownloadstate: ImageDownloadStates
     var backgroundImageDownloaded: UIImage
@@ -37,12 +38,13 @@ struct Game: Codable {
             metacritic = metacriticScore.description
         }
         released = try container.decodeIfPresent(String.self, forKey: .released) ?? "-"
+        rating = try container.decodeIfPresent(Float.self, forKey: .rating) ?? 0
         backgroundImageDownloaded = UIImage()
         imageDownloadstate = .new
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, released
+        case id, name, metacritic, released, rating
         case backgroundImage = "background_image"
     }
 }

@@ -98,22 +98,22 @@ extension BrowseGameViewController: UISearchResultsUpdating {
         }
         self.searchTask = task
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: task)
-
-        
     }
 }
 
 extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching{
    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as! DetailGameViewController
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
         var game: Game?
         game = gameResults[indexPath.row]
-        vc.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
+        vc?.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
         
         
-        vc.gameID = game?.id ?? 0
-        self.navigationController?.pushViewController(vc, animated: true)
+        vc?.gameID = game?.id ?? 0
+        if let vc = vc {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {

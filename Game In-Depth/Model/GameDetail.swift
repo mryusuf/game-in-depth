@@ -18,7 +18,7 @@ struct GameDetail: Codable {
     let developers: [Developer]
     let publishers: [Publisher]
     let genres: [Genre]
-//    let clip: Clip
+    let rating: Int?
     var backgroundImageDownloaded: UIImage
     var imageDownloadstate: ImageDownloadStates
     
@@ -41,20 +41,15 @@ struct GameDetail: Codable {
         developers = try container.decode([Developer].self, forKey: .developers)
         publishers = try container.decode([Publisher].self, forKey: .publishers)
         genres = try container.decode([Genre].self, forKey: .genres)
-//        clip = try container.decode(Clip.self, forKey: .clip)
+        rating = try container.decodeIfPresent(Int.self, forKey: .rating) ?? 0
         backgroundImageDownloaded = UIImage()
         imageDownloadstate = .new
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, description_raw, released, developers, publishers, genres
+        case id, name, metacritic, description_raw, released, developers, publishers, genres, rating
         case backgroundImage = "background_image"
     }
-}
-
-struct Clip: Codable {
-    let clip: String
-    let preview: String
 }
 
 struct Genre: Codable {

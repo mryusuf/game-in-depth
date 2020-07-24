@@ -17,7 +17,6 @@
                         <subviews>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="r3M-O2-WgM">
                                 <rect key="frame" x="20" y="108" width="374" height="705"/>
-                                <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="6rz-uT-Zs4">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -37,7 +36,7 @@
                                 <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </activityIndicatorView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="7a1-Bq-g6q" firstAttribute="trailing" secondItem="r3M-O2-WgM" secondAttribute="trailing" constant="20" id="06Z-hJ-lbj"/>
                             <constraint firstItem="6kf-KE-hEg" firstAttribute="top" secondItem="7a1-Bq-g6q" secondAttribute="top" constant="112" id="3Ys-le-yXI"/>
@@ -71,7 +70,6 @@
                         <subviews>
                             <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="m6N-Gt-nF1">
                                 <rect key="frame" x="20" y="44" width="374" height="818"/>
-                                <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Vp2-gJ-Bo4">
                                     <size key="itemSize" width="128" height="128"/>
                                     <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -81,7 +79,7 @@
                                 <cells/>
                             </collectionView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="m6N-Gt-nF1" firstAttribute="top" secondItem="6G1-Y1-1AC" secondAttribute="top" id="Kwg-gM-Y07"/>
                             <constraint firstItem="6G1-Y1-1AC" firstAttribute="trailing" secondItem="m6N-Gt-nF1" secondAttribute="trailing" constant="20" id="UMl-Rx-qC7"/>
@@ -165,7 +163,6 @@
                                                     </stackView>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="x06-yQ-xbK">
                                                         <rect key="frame" x="0.0" y="50" width="394" height="285"/>
-                                                        <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="285" id="VS4-uK-qAb"/>
                                                         </constraints>
@@ -203,7 +200,6 @@
                                                     </stackView>
                                                     <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="R2r-yC-a0h">
                                                         <rect key="frame" x="0.0" y="50" width="394" height="285"/>
-                                                        <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
                                                         <constraints>
                                                             <constraint firstAttribute="height" constant="285" id="3jv-7Q-6FD"/>
                                                         </constraints>
@@ -241,7 +237,7 @@
                                 <viewLayoutGuide key="frameLayoutGuide" id="ZMg-9O-YGk"/>
                             </scrollView>
                         </subviews>
-                        <color key="backgroundColor" systemColor="tertiaryLabelColor" red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.29999999999999999" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="86v-6Z-YwU" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="Bni-Lq-aG3"/>
                             <constraint firstItem="86v-6Z-YwU" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="XJg-I6-6ek"/>
@@ -253,6 +249,7 @@
                     <navigationItem key="navigationItem" title="Popular Games" largeTitleDisplayMode="always" id="1kd-sN-wh2"/>
                     <size key="freeformSize" width="414" height="1300"/>
                     <connections>
+                        <outlet property="homeScrollView" destination="86v-6Z-YwU" id="IBZ-lL-zT6"/>
                         <outlet property="mainBannerCollectionView" destination="Yal-Yw-WWU" id="uTa-TC-vY8"/>
                         <outlet property="topGamesCollectionView" destination="R2r-yC-a0h" id="B38-se-bye"/>
                         <outlet property="topMoreButton" destination="94A-Qo-jNE" id="WDl-0P-c4A"/>

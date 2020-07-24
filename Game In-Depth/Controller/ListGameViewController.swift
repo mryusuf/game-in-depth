@@ -11,6 +11,7 @@ import UIKit
 class ListGameViewController: UIViewController {
 
     @IBOutlet weak var listGameCollectionView: UICollectionView!
+    let loadingIndicatorView = UIActivityIndicatorView(style: .large)
     
     var listGames: [Game] = []
     var gamePosters = [String: UIImage]()
@@ -24,6 +25,8 @@ class ListGameViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         navigationController?.isNavigationBarHidden = false
+        showLoadingIndicator()
+        listGameCollectionView.isHidden = true
         fetchGames()
     }
     
@@ -45,6 +48,8 @@ class ListGameViewController: UIViewController {
             ApiManager.shared.fetchAnticipatedGames(pageSize: pageSize, page: page){ (fetchedGames) in
                 if let fetchedGames = fetchedGames {
                     DispatchQueue.main.async {
+                        self.loadingIndicatorView.stopAnimating()
+                        self.listGameCollectionView.isHidden = false
                         self.totalCount = fetchedGames.count
                         self.currentCount = self.page * self.pageSize
                         self.listGames.append(contentsOf: fetchedGames.results!)
@@ -89,7 +94,14 @@ class ListGameViewController: UIViewController {
         let endIndex = startIndex + games.count
         return (startIndex..<endIndex).map { IndexPath(row: $0, section: 0) }
     }
-
+    
+    func showLoadingIndicator() {
+        loadingIndicatorView.center = self.view.center
+        loadingIndicatorView.color = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        loadingIndicatorView.hidesWhenStopped = true
+        self.view.addSubview(loadingIndicatorView)
+        loadingIndicatorView.startAnimating()
+    }
 
 }
 extension ListGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching{
@@ -134,8 +146,8 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
             cell?.listGameImageView.translatesAutoresizingMaskIntoConstraints = false
             cell?.listGameImageView.image = gamePosters[game.name]
             cell?.listGameNameLabel.text = game.name
-            cell?.listGameRating.text = game.metacritic?.description
-            cell?.listGameReleaseDate.text = game.released
+            cell?.listGameRating.text = "rating: \(game.rating?.description ?? "")"
+            cell?.listGameReleaseDate.text = "released: \(game.released?.description ?? "")"
             
             if game.imageDownloadstate == .new {
                 cell?.listGameLoading.startAnimating()
@@ -162,7 +174,7 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
         } else {
             cell?.listGameLoading.startAnimating()
         }
-        return cell!
+        return cell ?? UICollectionViewCell()
     }
     
     func isLoadingItems(for indexPath: IndexPath) -> Bool {

@@ -75,20 +75,16 @@ class DetailGameViewController: UIViewController {
                                 }
                             }
                         }
-                        
                     } else {
                         self.setImage()
                     }
                 }
             }
         }
-        
-        
-        
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     func setImage() {
@@ -98,6 +94,4 @@ class DetailGameViewController: UIViewController {
         self.detailPosterImageView.image = self.detailPosterImage
     }
     
-
-
 }
