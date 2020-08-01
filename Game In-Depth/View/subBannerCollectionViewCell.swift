@@ -14,6 +14,7 @@ class subBannerCollectionViewCell: UICollectionViewCell {
     @IBOutlet weak var metacriticRatingLabel: UILabel!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var subPosterLoading: UIActivityIndicatorView!
+    @IBOutlet weak var releaseLabel: UILabel!
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code

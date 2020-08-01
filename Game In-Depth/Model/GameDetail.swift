@@ -14,11 +14,11 @@ struct GameDetail: Codable {
     let description_raw: String
     let metacritic: String?
     let released: String?
-    let backgroundImage: URL
+    let backgroundImage: URL?
     let developers: [Developer]
     let publishers: [Publisher]
     let genres: [Genre]
-//    let clip: Clip
+    let rating: Float?
     var backgroundImageDownloaded: UIImage
     var imageDownloadstate: ImageDownloadStates
     
@@ -29,8 +29,8 @@ struct GameDetail: Codable {
         name = try container.decode(String.self, forKey: .name)
         description_raw = try container.decode(String.self, forKey: .description_raw)
         
-        let backgroundImageString = try container.decode(String.self, forKey: .backgroundImage)
-        backgroundImage = URL(string: backgroundImageString)!
+        let backgroundImageString = try container.decodeIfPresent(String.self, forKey: .backgroundImage) ?? ""
+        backgroundImage = URL(string: backgroundImageString)
         let metacriticScore = try container.decodeIfPresent(Int.self, forKey: .metacritic) ?? 0
         if metacriticScore == 0 {
             metacritic = "Not Available"
@@ -41,20 +41,15 @@ struct GameDetail: Codable {
         developers = try container.decode([Developer].self, forKey: .developers)
         publishers = try container.decode([Publisher].self, forKey: .publishers)
         genres = try container.decode([Genre].self, forKey: .genres)
-//        clip = try container.decode(Clip.self, forKey: .clip)
+        rating = try container.decodeIfPresent(Float.self, forKey: .rating) ?? 0
         backgroundImageDownloaded = UIImage()
         imageDownloadstate = .new
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, description_raw, released, developers, publishers, genres
+        case id, name, metacritic, description_raw, released, developers, publishers, genres, rating
         case backgroundImage = "background_image"
     }
-}
-
-struct Clip: Codable {
-    let clip: String
-    let preview: String
 }
 
 struct Genre: Codable {

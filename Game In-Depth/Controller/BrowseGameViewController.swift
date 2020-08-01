@@ -9,7 +9,7 @@
 import UIKit
 
 class BrowseGameViewController: UIViewController {
-
+    
     @IBOutlet weak var searchCollectionView: UICollectionView!
     @IBOutlet weak var searchLoading: UIActivityIndicatorView!
     @IBOutlet weak var noResultLabel: UILabel!
@@ -25,7 +25,7 @@ class BrowseGameViewController: UIViewController {
     var searchTask: DispatchWorkItem?
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         let searchController = UISearchController(searchResultsController: nil)
         searchController.searchResultsUpdater = self
         searchController.obscuresBackgroundDuringPresentation = false
@@ -42,45 +42,45 @@ class BrowseGameViewController: UIViewController {
     }
     
     func fetchGames(query: String) {
-            guard !isFetching else { return }
-            isFetching = true
+        guard !isFetching else { return }
+        isFetching = true
         searchLoading.startAnimating()
         ApiManager.shared.fetchSearchGames(query: query, pageSize: pageSize, page: page){ (fetchedGames) in
-                    if let fetchedGames = fetchedGames {
-                        DispatchQueue.main.async {
-                            self.totalCount = fetchedGames.count
-
-                            self.searchLoading.stopAnimating()
-                            if self.totalCount == 0 {
-                                self.noResultLabel.isHidden = false
-                                self.searchCollectionView.isHidden = true
-                                self.isFetching = false
-                            } else {
-                            self.noResultLabel.isHidden = true
-                            self.searchCollectionView.isHidden = false
-                            self.currentCount = self.page * self.pageSize
-                                self.gameResults.append(contentsOf: fetchedGames.results!)
-                            if self.page > 1 {
-                                let newIndexPathsToReload = self.calculateIndexPathForReload(from: fetchedGames.results!)
-                                let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: newIndexPathsToReload)
-                                self.searchCollectionView.reloadItems(at: indexPathsToReload)
-                            } else {
-                                self.searchCollectionView.reloadData()
-                            }
-                            self.page += 1
-                            self.isFetching = false
-                            }
+            if let fetchedGames = fetchedGames {
+                DispatchQueue.main.async {
+                    self.totalCount += fetchedGames.results?.count ?? 0
+                    
+                    self.searchLoading.stopAnimating()
+                    if self.totalCount == 0 {
+                        self.noResultLabel.isHidden = false
+                        self.searchCollectionView.isHidden = true
+                        self.isFetching = false
+                    } else {
+                        self.noResultLabel.isHidden = true
+                        self.searchCollectionView.isHidden = false
+                        self.currentCount = self.page * self.pageSize
+                        self.gameResults.append(contentsOf: fetchedGames.results!)
+                        if self.page > 1 {
+                            let newIndexPathsToReload = self.calculateIndexPathForReload(from: fetchedGames.results!)
+                            let indexPathsToReload = self.visibleIndexPathsToReload(intersecting: newIndexPathsToReload)
+                            self.searchCollectionView.reloadItems(at: indexPathsToReload)
+                        } else {
+                            self.searchCollectionView.reloadData()
                         }
+                        self.page += 1
+                        self.isFetching = false
                     }
                 }
-
+            }
         }
         
-        func calculateIndexPathForReload(from games: [Game]) -> [IndexPath] {
-            let startIndex = gameResults.count - games.count
-            let endIndex = startIndex + games.count
-            return (startIndex..<endIndex).map { IndexPath(row: $0, section: 0) }
-        }
+    }
+    
+    func calculateIndexPathForReload(from games: [Game]) -> [IndexPath] {
+        let startIndex = gameResults.count - games.count
+        let endIndex = startIndex + games.count
+        return (startIndex..<endIndex).map { IndexPath(row: $0, section: 0) }
+    }
 }
 
 extension BrowseGameViewController: UISearchResultsUpdating {
@@ -98,22 +98,22 @@ extension BrowseGameViewController: UISearchResultsUpdating {
         }
         self.searchTask = task
         DispatchQueue.main.asyncAfter(deadline: DispatchTime.now() + 1, execute: task)
-
-        
     }
 }
 
 extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching{
-   
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as! DetailGameViewController
+        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
         var game: Game?
         game = gameResults[indexPath.row]
-        vc.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
+        vc?.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
         
         
-        vc.gameID = game?.id ?? 0
-        self.navigationController?.pushViewController(vc, animated: true)
+        vc?.gameID = game?.id ?? 0
+        if let vc = vc {
+            self.navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -151,41 +151,42 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
             if game.imageDownloadstate == .new {
                 cell?.listGameLoading.startAnimating()
                 if !self.isFetching {
-                if let backgroundImage = game.backgroundImage {
-                ApiManager.shared.fetchImagePoster(imageURL: backgroundImage) { (data) in
-                    if let imageData = data {
-                        let image = UIImage(data: imageData)
-                        DispatchQueue.main.async {
-                            if self.gameResults.count > indexPath.row {
-                                cell?.listGameLoading.stopAnimating()
-                                cell?.listGameLoading.isHidden = true
-                            self.gameResultPosters[game.name] = image
-                            self.gameResults[indexPath.row].imageDownloadstate = .downloaded
-                            self.searchCollectionView.reloadItems(at: [indexPath])
+                    if let backgroundImage = game.backgroundImage {
+                        ApiManager.shared.fetchImagePoster(imageURL: backgroundImage) { (data) in
+                            if let imageData = data {
+                                let image = UIImage(data: imageData)
+                                DispatchQueue.main.async {
+                                    if self.gameResults.count > indexPath.row {
+                                        cell?.listGameLoading.stopAnimating()
+                                        cell?.listGameLoading.isHidden = true
+                                        self.gameResultPosters[game.name] = image
+                                        self.gameResults[indexPath.row].imageDownloadstate = .downloaded
+                                        self.searchCollectionView.reloadItems(at: [indexPath])
+                                    }
+                                }
+                            } else {
+                                print("UpcommingCollectionView: error attaching image")
+                                DispatchQueue.main.async {
+                                    if self.gameResults.count > indexPath.row  {
+                                        cell?.listGameLoading.stopAnimating()
+                                        cell?.listGameLoading.isHidden = true
+                                        self.gameResultPosters[game.name] = UIImage(systemName: "nosign")
+                                        self.gameResults[indexPath.row].imageDownloadstate = .failed
+                                        self.searchCollectionView.reloadItems(at: [indexPath])
+                                    }
+                                }
                             }
                         }
                     } else {
-                        print("UpcommingCollectionView: error attaching image")
-                        DispatchQueue.main.async {
-                             if self.gameResults.count > indexPath.row  {
-                                cell?.listGameLoading.stopAnimating()
-                                cell?.listGameLoading.isHidden = true
-                            self.gameResultPosters[game.name] = UIImage(systemName: "nosign")
-                            self.gameResults[indexPath.row].imageDownloadstate = .failed
-                            self.searchCollectionView.reloadItems(at: [indexPath])
-                            }
-                        }
+                        cell?.listGameLoading.stopAnimating()
+                        self.gameResultPosters[game.name] = UIImage(systemName: "nosign")
+                        self.gameResults[indexPath.row].imageDownloadstate = .failed
+                        self.searchCollectionView.reloadItems(at: [indexPath])
                     }
+                }else {
+                    cell?.listGameLoading.stopAnimating()
+                    cell?.listGameLoading.isHidden = true
                 }
-                } else {
-                    self.gameResultPosters[game.name] = UIImage(systemName: "nosign")
-                    self.gameResults[indexPath.row].imageDownloadstate = .failed
-                    self.searchCollectionView.reloadItems(at: [indexPath])
-                }
-            }else {
-                cell?.listGameLoading.stopAnimating()
-                cell?.listGameLoading.isHidden = true
-            }
             }
         } else {
             cell?.listGameLoading.startAnimating()
@@ -194,9 +195,9 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
     func isLoadingItems(for indexPath: IndexPath) -> Bool {
-      return indexPath.row >= currentCount
+        return indexPath.row >= currentCount - 1
     }
-
+    
     func visibleIndexPathsToReload(intersecting indexPaths: [IndexPath]) -> [IndexPath] {
         let indexPathsForVisibleRows = searchCollectionView.indexPathsForVisibleItems
         let indexPathsIntersection = Set(indexPathsForVisibleRows).intersection(indexPaths)
@@ -204,10 +205,12 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     func collectionView(_ collectionView: UICollectionView, prefetchItemsAt indexPaths: [IndexPath]) {
         if indexPaths.contains(where: isLoadingItems) {
-            fetchGames(query: query)
+            if !isFetching {
+                fetchGames(query: query)
+            }
         }
     }
-       
+    
 }
 
 

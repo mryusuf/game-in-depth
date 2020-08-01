@@ -57,38 +57,41 @@ class DetailGameViewController: UIViewController {
                     self.detailReleaseDateLabel.text = fetchedGameDetail.released
                     if self.detailPosterImage == UIImage() {
                         self.detailLoading.startAnimating()
-                        ApiManager.shared.fetchImagePoster(imageURL: self.game!.backgroundImage) { (data) in
-                            if let imageData = data {
-                                if let image = UIImage(data: imageData) {
-                                DispatchQueue.main.async {
-                                    self.detailPosterImage = image
-                                    self.detailLoading.stopAnimating()
-                                    self.setImage()
-                                }
-                                }
-                            } else {
-                                print("Detail: error attaching image")
-                                DispatchQueue.main.async {
-                                    self.detailPosterImage = UIImage(systemName: "nosign")!
-                                    self.detailLoading.stopAnimating()
-                                    self.setImage()
+                        if let backgroundImageURL = self.game?.backgroundImage {
+                            ApiManager.shared.fetchImagePoster(imageURL: backgroundImageURL) { (data) in
+                                if let imageData = data {
+                                    if let image = UIImage(data: imageData) {
+                                        DispatchQueue.main.async {
+                                            self.detailPosterImage = image
+                                            self.detailLoading.stopAnimating()
+                                            self.setImage()
+                                        }
+                                    }
+                                } else {
+                                    print("Detail: error attaching image")
+                                    DispatchQueue.main.async {
+                                        self.detailPosterImage = UIImage(systemName: "nosign")!
+                                        self.detailLoading.stopAnimating()
+                                        self.setImage()
+                                    }
                                 }
                             }
+                            
+                        } else {
+                            self.detailPosterImage = UIImage(systemName: "nosign")!
+                            self.detailLoading.stopAnimating()
+                            self.setImage()
                         }
-                        
                     } else {
                         self.setImage()
                     }
                 }
             }
         }
-        
-        
-        
     }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
     }
     
     func setImage() {
@@ -98,6 +101,7 @@ class DetailGameViewController: UIViewController {
         self.detailPosterImageView.image = self.detailPosterImage
     }
     
-
-
+    func scrollViewDidScroll(scrollView: UIScrollView) {
+        scrollView.contentOffset.x = 0
+    }
 }
