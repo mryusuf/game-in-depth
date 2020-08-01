@@ -166,6 +166,8 @@ class ApiManager {
             components.path = "/api/games"
             components.queryItems = [
                 URLQueryItem(name: "search", value: query),
+                URLQueryItem(name: "page_size", value: pageSize.description),
+                URLQueryItem(name: "page", value: page.description)
             ]
             
             let request = URLRequest(url: components.url!)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="16097.2" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
@@ -17,7 +17,7 @@
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                 <subviews>
                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jmm-fN-DJr">
-                        <rect key="frame" x="0.0" y="0.0" width="200" height="269"/>
+                        <rect key="frame" x="0.0" y="0.0" width="200" height="275"/>
                         <userDefinedRuntimeAttributes>
                             <userDefinedRuntimeAttribute type="boolean" keyPath="layer.maskToBounds" value="YES"/>
                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -26,7 +26,7 @@
                         </userDefinedRuntimeAttributes>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="rating" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ogn-RF-kV8">
-                        <rect key="frame" x="0.0" y="277" width="189" height="14"/>
+                        <rect key="frame" x="0.0" y="283" width="189" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="NyG-DI-WtG"/>
                         </constraints>
@@ -49,7 +49,7 @@
                         <color key="color" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </activityIndicatorView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10-03-2015" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="K94-ph-jNp">
-                        <rect key="frame" x="0.0" y="299" width="189" height="14"/>
+                        <rect key="frame" x="0.0" y="305" width="189" height="14"/>
                         <constraints>
                             <constraint firstAttribute="height" constant="14" id="mjs-JS-X1e"/>
                         </constraints>
@@ -70,7 +70,7 @@
                 <constraint firstItem="K94-ph-jNp" firstAttribute="top" secondItem="Ogn-RF-kV8" secondAttribute="bottom" constant="8" id="Fsb-nl-xqi"/>
                 <constraint firstAttribute="trailing" secondItem="K94-ph-jNp" secondAttribute="trailing" constant="11" id="HWy-Pg-XvI"/>
                 <constraint firstItem="Ogn-RF-kV8" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Q3n-hs-fJX"/>
-                <constraint firstItem="0AI-GL-UDp" firstAttribute="top" secondItem="K94-ph-jNp" secondAttribute="bottom" constant="16" id="Val-JB-T1y"/>
+                <constraint firstItem="0AI-GL-UDp" firstAttribute="top" secondItem="K94-ph-jNp" secondAttribute="bottom" constant="10" id="Val-JB-T1y"/>
                 <constraint firstItem="9nT-qs-oXu" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="Xzv-Ys-wAw"/>
                 <constraint firstItem="jmm-fN-DJr" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="ZFw-5m-tvG"/>
                 <constraint firstItem="Ogn-RF-kV8" firstAttribute="top" secondItem="jmm-fN-DJr" secondAttribute="bottom" constant="8" id="bYx-UF-TSk"/>
