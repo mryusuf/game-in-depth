@@ -32,7 +32,6 @@ class BrowseGameViewController: UIViewController {
         searchController.searchBar.placeholder = "Search Game Titles"
         navigationItem.searchController = searchController
         
-        
         searchCollectionView.delegate = self
         searchCollectionView.dataSource = self
         searchCollectionView.prefetchDataSource = self
@@ -45,7 +44,7 @@ class BrowseGameViewController: UIViewController {
         guard !isFetching else { return }
         isFetching = true
         searchLoading.startAnimating()
-        ApiManager.shared.fetchSearchGames(query: query, pageSize: pageSize, page: page){ (fetchedGames) in
+        ApiManager.shared.fetchSearchGames(query: query, pageSize: pageSize, page: page) { (fetchedGames) in
             if let fetchedGames = fetchedGames {
                 DispatchQueue.main.async {
                     self.totalCount += fetchedGames.results?.count ?? 0
@@ -101,17 +100,14 @@ extension BrowseGameViewController: UISearchResultsUpdating {
     }
 }
 
-extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching{
+extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
-        var game: Game?
-        game = gameResults[indexPath.row]
-        vc?.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
-        
-        
-        vc?.gameId = game?.id ?? 0
-        if let vc = vc {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
+            var game: Game?
+            game = gameResults[indexPath.row]
+            vc.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
+            vc.gameId = game?.id ?? 0
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
@@ -119,9 +115,7 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let padding: CGFloat = 24
         let collectionViewSize = collectionView.frame.size.width - padding
-        
         let width = collectionViewSize/2
-        
         let height = width * 363 / 200
         
         return CGSize(width: width, height: height)
@@ -167,7 +161,7 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
                             } else {
                                 print("UpcommingCollectionView: error attaching image")
                                 DispatchQueue.main.async {
-                                    if self.gameResults.count > indexPath.row  {
+                                    if self.gameResults.count > indexPath.row {
                                         cell?.listGameLoading.stopAnimating()
                                         cell?.listGameLoading.isHidden = true
                                         self.gameResultPosters[game.name] = UIImage(systemName: "nosign")
@@ -183,7 +177,7 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
                         self.gameResults[indexPath.row].imageDownloadstate = .failed
                         self.searchCollectionView.reloadItems(at: [indexPath])
                     }
-                }else {
+                } else {
                     cell?.listGameLoading.stopAnimating()
                     cell?.listGameLoading.isHidden = true
                 }
@@ -212,5 +206,3 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
     }
     
 }
-
-

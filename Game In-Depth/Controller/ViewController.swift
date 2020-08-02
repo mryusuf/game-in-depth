@@ -234,15 +234,12 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                     }
                 }
                 }
-            }else {
+            } else {
                 cell?.subPosterLoading.stopAnimating()
                 cell?.subPosterLoading.isHidden = true
             }
             return cell ?? UICollectionViewCell()
-        }
-        
-        
-        else {
+        } else {
             return UICollectionViewCell()
         }
     }
@@ -281,7 +278,5 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             return CGSize(width: 180, height: 285)
         }
     }
-    
-    
     
 }

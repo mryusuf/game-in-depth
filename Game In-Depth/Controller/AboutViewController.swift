@@ -17,10 +17,9 @@ class AboutViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
     @IBSegueAction func showAboutView(_ coder: NSCoder) -> UIViewController? {
         let hostingController = UIHostingController(coder: coder, rootView: AboutView())
-        hostingController!.view.backgroundColor = UIColor.clear;
+        hostingController!.view.backgroundColor = UIColor.clear
         return hostingController
     }
     

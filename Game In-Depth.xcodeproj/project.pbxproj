@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		821C032024D786F3000A432A /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 821C031F24D786F3000A432A /* .swiftlint.yml */; };
 		8240DE4A24BDCDA30014FA53 /* SubBannerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8240DE4824BDCDA30014FA53 /* SubBannerCollectionViewCell.swift */; };
 		8240DE4B24BDCDA30014FA53 /* SubBannerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 8240DE4924BDCDA30014FA53 /* SubBannerCollectionViewCell.xib */; };
 		8240DE4D24BDFA720014FA53 /* GameDetail.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8240DE4C24BDFA720014FA53 /* GameDetail.swift */; };
@@ -35,6 +36,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		821C031F24D786F3000A432A /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 		8240DE4824BDCDA30014FA53 /* SubBannerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubBannerCollectionViewCell.swift; sourceTree = "<group>"; };
 		8240DE4924BDCDA30014FA53 /* SubBannerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SubBannerCollectionViewCell.xib; sourceTree = "<group>"; };
 		8240DE4C24BDFA720014FA53 /* GameDetail.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameDetail.swift; sourceTree = "<group>"; };
@@ -103,6 +105,7 @@
 				82CDD97C24BABFFB00A9E195 /* Assets.xcassets */,
 				82CDD97E24BABFFB00A9E195 /* LaunchScreen.storyboard */,
 				82CDD98124BABFFB00A9E195 /* Info.plist */,
+				821C031F24D786F3000A432A /* .swiftlint.yml */,
 			);
 			path = "Game In-Depth";
 			sourceTree = "<group>";
@@ -218,6 +221,7 @@
 				8262B23D24C49C7A00178B71 /* ListGameCollectionViewCell.xib in Resources */,
 				82CDD98024BABFFB00A9E195 /* LaunchScreen.storyboard in Resources */,
 				82CDD97D24BABFFB00A9E195 /* Assets.xcassets in Resources */,
+				821C032024D786F3000A432A /* .swiftlint.yml in Resources */,
 				82CDD98C24BAC27100A9E195 /* MainBannerCollectionViewCell.xib in Resources */,
 				82CDD97B24BABFF800A9E195 /* Main.storyboard in Resources */,
 				8240DE4B24BDCDA30014FA53 /* SubBannerCollectionViewCell.xib in Resources */,

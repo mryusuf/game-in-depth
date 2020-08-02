@@ -45,7 +45,7 @@ class ListGameViewController: UIViewController {
         isFetching = true
         switch gameType {
         case .upcoming:
-            ApiManager.shared.fetchAnticipatedGames(pageSize: pageSize, page: page){ (fetchedGames) in
+            ApiManager.shared.fetchAnticipatedGames(pageSize: pageSize, page: page) { (fetchedGames) in
                 if let fetchedGames = fetchedGames {
                     DispatchQueue.main.async {
                         self.loadingIndicatorView.stopAnimating()
@@ -66,7 +66,7 @@ class ListGameViewController: UIViewController {
                 }
             }
         case .topRated:
-            ApiManager.shared.fetchHighestRatedGames(pageSize: pageSize, page: page){ (fetchedGames) in
+            ApiManager.shared.fetchHighestRatedGames(pageSize: pageSize, page: page) { (fetchedGames) in
                 if let fetchedGames = fetchedGames {
                     DispatchQueue.main.async {
                         self.totalCount = fetchedGames.count
@@ -104,14 +104,13 @@ class ListGameViewController: UIViewController {
     }
 
 }
-extension ListGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching{
+extension ListGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
         var game: Game?
         game = listGames[indexPath.row]
         vc?.detailPosterImage = gamePosters[game?.name ?? ""] ?? UIImage()
-        
         
         vc?.gameId = game?.id ?? 0
         if let vc = vc {
@@ -140,9 +139,7 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
             let game = listGames[indexPath.row]
             let padding: CGFloat = 32
             let collectionViewSize = collectionView.frame.size.width - padding
-            
             let width = collectionViewSize/2
-            
             let height = width * 250 / 200
             cell?.listGameImageView.frame = CGRect(x: 0, y: 0, width: width, height: height)
             cell?.listGameImageView.translatesAutoresizingMaskIntoConstraints = false
@@ -150,7 +147,6 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
             cell?.listGameNameLabel.text = game.name
             cell?.listGameRating.text = "rating: \(game.rating?.description ?? "")"
             cell?.listGameReleaseDate.text = "released: \(game.released?.description ?? "")"
-            
             if game.imageDownloadstate == .new {
                 cell?.listGameLoading.startAnimating()
                 ApiManager.shared.fetchImagePoster(imageURL: (game.backgroundImage ?? URL(string: ""))!) { (data) in
@@ -169,7 +165,7 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
                         }
                     }
                 }
-            }else {
+            } else {
                 cell?.listGameLoading.stopAnimating()
                 cell?.listGameLoading.isHidden = true
             }

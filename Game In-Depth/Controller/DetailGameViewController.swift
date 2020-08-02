@@ -81,8 +81,7 @@ class DetailGameViewController: UIViewController {
                         let released = fetchedGameFavourite.released ?? ""
                         let backgroundImageURL = fetchedGameFavourite.backgroundImage
                         let backgroundImageDownloaded = fetchedGameFavourite.backgroundImageDownloaded ?? Data()
-                        self.setupGameDetailViews(title, descriptionRaw, metascore, genres, developers,
-                                                  publishers, released, backgroundImageURL, backgroundImageDownloaded)
+                        self.setupGameDetailViews(title, descriptionRaw, metascore, genres, developers, publishers, released, backgroundImageURL, backgroundImageDownloaded)
                     }
                 }
             }
@@ -103,8 +102,8 @@ class DetailGameViewController: UIViewController {
                         let genres = fetchedGameDetail.genres.map { $0.name }.joined(separator: ",")
                         let developers = fetchedGameDetail.developers.map { $0.name }.joined(separator: ",")
                         let publishers = fetchedGameDetail.publishers.map { $0.name }.joined(separator: ",")
-                        self.setupGameDetailViews(fetchedGameDetail.name, fetchedGameDetail.descriptionRaw, metascore, genres, developers, publishers, fetchedGameDetail.released!,
-                                                  fetchedGameDetail.backgroundImage)
+                        self.setupGameDetailViews(fetchedGameDetail.name, fetchedGameDetail.descriptionRaw, metascore, genres, developers,
+                                                  publishers, fetchedGameDetail.released!, fetchedGameDetail.backgroundImage)
                     }
                 }
             }
@@ -150,7 +149,6 @@ class DetailGameViewController: UIViewController {
                         }
                     }
                 }
-                
             } else {
                 let image = UIImage(systemName: "nosign")!
                 self.detailLoading.stopAnimating()
@@ -160,13 +158,6 @@ class DetailGameViewController: UIViewController {
             if let image = UIImage(data: backgroundImage) {
                 self.setImage(image)
             }
-        }
-    }
-    func setFavouriteButtonImage(_ isFavourite: Bool) {
-        if isFavourite {
-            favouriteButton.setImage(UIImage(systemName: "star.fill"), for: .normal)
-        } else {
-            favouriteButton.setImage(UIImage(systemName: "star"), for: .normal)
         }
     }
     @objc func favouriteButtonTapped(_ sender: UIButton) {
@@ -180,9 +171,8 @@ class DetailGameViewController: UIViewController {
                 favouriteGameProvider.createFavouriteGameFromAPI(game: game) {
                     DispatchQueue.main.async {
                         self.feedbackGenerator?.selectionChanged()
-                        let alert = UIAlertController(title: "Success", message: "Added to Favourite Games", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(alert, animated: true, completion: nil)
+                        let message = "Added to Favourite Games"
+                        self.presentAlert(message)
                         self.isFavourite = true
                     }
                 }
@@ -191,9 +181,8 @@ class DetailGameViewController: UIViewController {
                 favouriteGameProvider.createFavouriteGameFromDB(game: game) {
                     DispatchQueue.main.async {
                         self.feedbackGenerator?.selectionChanged()
-                        let alert = UIAlertController(title: "Success", message: "Added to Favourite Games", preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default))
-                        self.present(alert, animated: true, completion: nil)
+                        let message = "Added to Favourite Games"
+                        self.presentAlert(message)
                         self.isFavourite = true
                     }
                 }
@@ -210,9 +199,8 @@ class DetailGameViewController: UIViewController {
             favouriteGameProvider.deleteFavouriteGame(id) {
                 DispatchQueue.main.async {
                     self.feedbackGenerator?.selectionChanged()
-                    let alert = UIAlertController(title: "Success", message: "Deleted from Favourite Games", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(alert, animated: true, completion: nil)
+                    let message = "Deleted from Favourite Games"
+                    self.presentAlert(message)
                     self.isFavourite = false
                 }
             }
@@ -223,7 +211,12 @@ class DetailGameViewController: UIViewController {
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
         self.detailPosterImageView.addSubview(overlayView)
         self.detailPosterImageView.image = image
-    }    
+    }
+    func presentAlert(_ message: String) {
+        let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true, completion: nil)
+    }
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollView.contentOffset.x = 0
     }
@@ -246,7 +239,7 @@ extension UIView {
         let bottomBorder = CALayer()
         topBorder.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: thickness)
         topBorder.backgroundColor = #colorLiteral(red: 0.9685322642, green: 0.9686941504, blue: 0.9685109258, alpha: 1)
-        bottomBorder.frame = CGRect(x: 0, y: self.frame.size.height - thickness, width: self.frame.size.width, height:thickness)
+        bottomBorder.frame = CGRect(x: 0, y: self.frame.size.height - thickness, width: self.frame.size.width, height: thickness)
         bottomBorder.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
         self.layer.addSublayer(topBorder)
         self.layer.addSublayer(bottomBorder)

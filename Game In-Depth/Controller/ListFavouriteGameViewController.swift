@@ -50,7 +50,6 @@ class ListFavouriteGameViewController: UIViewController {
         listFavouriteGameTableView.dataSource = self
     }
     
-
 }
 
 extension ListFavouriteGameViewController: UITableViewDelegate {
@@ -80,7 +79,7 @@ extension ListFavouriteGameViewController: UITableViewDataSource {
             cell.favouriteGameReleased.text = "released: \(game.released ?? "")"
             cell.favouriteGameRating.text = "rating: \(game.rating?.description ?? "")"
             
-            if let image = game.backgroundImageDownloaded{
+            if let image = game.backgroundImageDownloaded {
                 cell.favouriteGameImageView.image = UIImage(data: image)
             } else {
                 cell.favouriteGameImageView.image = UIImage(systemName: "nosign")
@@ -90,6 +89,5 @@ extension ListFavouriteGameViewController: UITableViewDataSource {
             return UITableViewCell()
         }
     }
-    
-    
+   
 }

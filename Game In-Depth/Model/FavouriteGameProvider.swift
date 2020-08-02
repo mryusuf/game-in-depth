@@ -101,9 +101,9 @@ class FavouriteGameProvider {
         let backgroundImageURL = game.backgroundImage ?? URL(string: "")!
         let rating = game.rating ?? 0
         let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1) ?? Data()
-        let genres = game.genres.map{$0.name}.joined(separator: ",")
-        let developers = game.developers.map{ $0.name }.joined(separator: ",")
-        let publishers = game.publishers.map{ $0.name }.joined(separator: ",")
+        let genres = game.genres.map {$0.name}.joined(separator: ",")
+        let developers = game.developers.map { $0.name }.joined(separator: ",")
+        let publishers = game.publishers.map { $0.name }.joined(separator: ",")
         let taskContext = newTaskContext()
         taskContext.performAndWait {
             if let entity = NSEntityDescription.entity(forEntityName: "FavouriteGame", in: taskContext) {
@@ -129,7 +129,7 @@ class FavouriteGameProvider {
             }
         }
     }
-    func createFavouriteGameFromDB(game: FavouriteGameModel, completion: @escaping() -> Void ){
+    func createFavouriteGameFromDB(game: FavouriteGameModel, completion: @escaping() -> Void ) {
         let id = game.id ?? 0
         let name = game.name ?? ""
         let descriptionRaw =  game.descriptionRaw ?? ""

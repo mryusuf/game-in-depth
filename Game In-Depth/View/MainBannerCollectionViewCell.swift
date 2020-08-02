@@ -16,5 +16,4 @@ class MainBannerCollectionViewCell: UICollectionViewCell {
         super.awakeFromNib()
     }
     
-
 }
