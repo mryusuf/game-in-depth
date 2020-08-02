@@ -21,7 +21,7 @@ class DetailGameViewController: UIViewController {
     @IBOutlet weak var detailLoading: UIActivityIndicatorView!
     @IBOutlet weak var detailView: UIView!
     @IBOutlet weak var favouriteButton: UIButton!
-    @IBOutlet weak var MetascoreAndFavButtonStackView: UIStackView!
+    @IBOutlet weak var metascoreAndFavButtonStackView: UIStackView!
     @IBOutlet weak var genreAndReleaseStackView: UIStackView!
     @IBOutlet weak var devAndPublishersStackView: UIStackView!
     var gameId: Int?
@@ -46,7 +46,7 @@ class DetailGameViewController: UIViewController {
     private lazy var favouriteGameProvider: FavouriteGameProvider = {
         return FavouriteGameProvider()
     }()
-    var feedbackGenerator: UISelectionFeedbackGenerator? = nil
+    var feedbackGenerator: UISelectionFeedbackGenerator?
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
@@ -100,9 +100,9 @@ class DetailGameViewController: UIViewController {
                         self.detailLoading.stopAnimating()
                         self.gameDetail = fetchedGameDetail
                         let metascore = "Metascore: \(fetchedGameDetail.metacritic!)"
-                        let genres = fetchedGameDetail.genres.map{$0.name}.joined(separator: ",")
-                        let developers = fetchedGameDetail.developers.map{$0.name}.joined(separator: ",")
-                        let publishers = fetchedGameDetail.publishers.map{$0.name}.joined(separator: ",")
+                        let genres = fetchedGameDetail.genres.map { $0.name }.joined(separator: ",")
+                        let developers = fetchedGameDetail.developers.map { $0.name }.joined(separator: ",")
+                        let publishers = fetchedGameDetail.publishers.map { $0.name }.joined(separator: ",")
                         self.setupGameDetailViews(fetchedGameDetail.name, fetchedGameDetail.descriptionRaw, metascore, genres, developers, publishers, fetchedGameDetail.released!,
                                                   fetchedGameDetail.backgroundImage)
                     }
@@ -127,7 +127,7 @@ class DetailGameViewController: UIViewController {
         self.detailPublisherLabel.text = publishers
         self.detailReleaseDateLabel.text = released
         self.detailView.isHidden = false
-        self.MetascoreAndFavButtonStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        self.metascoreAndFavButtonStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         self.genreAndReleaseStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         self.devAndPublishersStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         if backgroundImage == Data() {
@@ -169,54 +169,33 @@ class DetailGameViewController: UIViewController {
             favouriteButton.setImage(UIImage(systemName: "star"), for: .normal)
         }
     }
-    
     @objc func favouriteButtonTapped(_ sender: UIButton) {
         // Preparing Haptic Feedback, doesn't work on Simulator
         feedbackGenerator = UISelectionFeedbackGenerator()
         feedbackGenerator?.prepare()
-        
         if !isFavourite {
-            var id: Int32 = 0
-            var name = "", descriptionRaw = "", metacritic = "", released = "", genres = "", developers = "", publishers = ""
-            var rating: Float = 0
-            var backgroundImageURL = URL(string: "")
-            var backgroundImageDownloaded = Data()
-            if !isFromFavouriteList, let game = gameDetail {
+            if !isFromFavouriteList, var game = gameDetail {
                 // From API-fetched GameDetail to Core Data
-                id = Int32(game.id)
-                name = game.name
-                descriptionRaw = game.descriptionRaw
-                metacritic = game.metacritic ?? ""
-                released = game.released ?? ""
-                backgroundImageURL = game.backgroundImage ?? URL(string: "")!
-                rating = game.rating ?? 0
-                backgroundImageDownloaded = detailPosterImage.jpegData(compressionQuality: 1) ?? Data()
-                genres = game.genres.map{$0.name}.joined(separator: ",")
-                developers = game.developers.map{$0.name}.joined(separator: ",")
-                publishers = game.publishers.map{$0.name}.joined(separator: ",")
+                game.backgroundImageDownloaded = self.detailPosterImageView.image ?? UIImage()
+                favouriteGameProvider.createFavouriteGameFromAPI(game: game) {
+                    DispatchQueue.main.async {
+                        self.feedbackGenerator?.selectionChanged()
+                        let alert = UIAlertController(title: "Success", message: "Added to Favourite Games", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                        self.isFavourite = true
+                    }
+                }
             } else if isFromFavouriteList, let game = gameFav {
                 // From FavouriteGame to Core Data, in case user view this page from FavouriteList Page -> defavourite -> favourite again
-                id = game.id ?? 0
-                name = game.name ?? ""
-                descriptionRaw =  game.descriptionRaw ?? ""
-                metacritic = game.metacritic ?? ""
-                publishers = game.publishers ?? ""
-                genres = game.genres ?? ""
-                developers = game.developers ?? ""
-                released = game.released ?? ""
-                rating = game.rating ?? 0
-                backgroundImageURL = game.backgroundImage ?? URL(string: "")!
-                backgroundImageDownloaded = game.backgroundImageDownloaded ?? Data()
-            }
-            
-            favouriteGameProvider.createFavouriteGame(id, name, descriptionRaw, metacritic, released, backgroundImageURL, developers, publishers, genres, rating, backgroundImageDownloaded ) {
-                DispatchQueue.main.async {
-                    self.feedbackGenerator?.selectionChanged()
-                    let alert = UIAlertController(title: "Success", message: "Added to Favourite Games.", preferredStyle: .alert)
-                    alert.addAction(UIAlertAction(title: "OK", style: .default))
-                    self.present(alert, animated: true, completion: nil)
-                    
-                    self.isFavourite = true
+                favouriteGameProvider.createFavouriteGameFromDB(game: game) {
+                    DispatchQueue.main.async {
+                        self.feedbackGenerator?.selectionChanged()
+                        let alert = UIAlertController(title: "Success", message: "Added to Favourite Games", preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default))
+                        self.present(alert, animated: true, completion: nil)
+                        self.isFavourite = true
+                    }
                 }
             }
         } else {
@@ -231,30 +210,24 @@ class DetailGameViewController: UIViewController {
             favouriteGameProvider.deleteFavouriteGame(id) {
                 DispatchQueue.main.async {
                     self.feedbackGenerator?.selectionChanged()
-                    let alert = UIAlertController(title: "Success", message: "Deleted from Favourite Games.", preferredStyle: .alert)
+                    let alert = UIAlertController(title: "Success", message: "Deleted from Favourite Games", preferredStyle: .alert)
                     alert.addAction(UIAlertAction(title: "OK", style: .default))
                     self.present(alert, animated: true, completion: nil)
-                    
                     self.isFavourite = false
                 }
             }
         }
     }
-    
-    
     func setImage(_ image: UIImage) {
         let overlayView = UIView(frame: CGRect(x: 0, y: 0, width: self.detailPosterImageView.frame.size.width, height: self.detailPosterImageView.frame.size.height))
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
         self.detailPosterImageView.addSubview(overlayView)
         self.detailPosterImageView.image = image
-        
-    }
-    
+    }    
     func scrollViewDidScroll(scrollView: UIScrollView) {
         scrollView.contentOffset.x = 0
     }
 }
-
 
 extension UIStackView {
     func addBackgroundAndBorderedView(color: UIColor) {
@@ -273,7 +246,7 @@ extension UIView {
         let bottomBorder = CALayer()
         topBorder.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: thickness)
         topBorder.backgroundColor = #colorLiteral(red: 0.9685322642, green: 0.9686941504, blue: 0.9685109258, alpha: 1)
-        bottomBorder.frame = CGRect(x:0, y: self.frame.size.height - thickness, width: self.frame.size.width, height:thickness)
+        bottomBorder.frame = CGRect(x: 0, y: self.frame.size.height - thickness, width: self.frame.size.width, height:thickness)
         bottomBorder.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
         self.layer.addSublayer(topBorder)
         self.layer.addSublayer(bottomBorder)

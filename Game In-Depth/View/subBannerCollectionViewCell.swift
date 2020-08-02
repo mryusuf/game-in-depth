@@ -8,7 +8,7 @@
 
 import UIKit
 
-class subBannerCollectionViewCell: UICollectionViewCell {
+class SubBannerCollectionViewCell: UICollectionViewCell {
 
     @IBOutlet weak var subPosterImageView: UIImageView!
     @IBOutlet weak var metacriticRatingLabel: UILabel!

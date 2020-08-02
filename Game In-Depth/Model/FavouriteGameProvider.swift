@@ -13,7 +13,7 @@ class FavouriteGameProvider {
     lazy var persistentContainer: NSPersistentContainer = {
         let container = NSPersistentContainer(name: "GameCoreDataModel")
         
-        container.loadPersistentStores { storeDesription, error in
+        container.loadPersistentStores { _, error in
             guard error == nil else {
                 fatalError("Unresolved error \(error!)")
             }
@@ -25,7 +25,6 @@ class FavouriteGameProvider {
         
         return container
     }()
-    
     private func newTaskContext() -> NSManagedObjectContext {
         let taskContext = persistentContainer.newBackgroundContext()
         taskContext.undoManager = nil
@@ -34,7 +33,7 @@ class FavouriteGameProvider {
         return taskContext
     }
     
-    func getAllFavouriteGames(completion: @escaping(_ games: [FavouriteGameModel]) -> ()){
+    func getAllFavouriteGames(completion: @escaping(_ games: [FavouriteGameModel]) -> Void) {
         let taskContext = newTaskContext()
         taskContext.perform {
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavouriteGame")
@@ -63,14 +62,14 @@ class FavouriteGameProvider {
         }
     }
     
-    func getFavouriteGame(_ id: Int, completion: @escaping(_ game: FavouriteGameModel?) -> ()){
+    func getFavouriteGame(_ id: Int, completion: @escaping(_ game: FavouriteGameModel?) -> Void) {
         let taskContext = newTaskContext()
         taskContext.perform {
             let fetchRequest = NSFetchRequest<NSManagedObject>(entityName: "FavouriteGame")
             fetchRequest.fetchLimit = 1
             fetchRequest.predicate = NSPredicate(format: "id == \(id)")
             do {
-                if let result = try taskContext.fetch(fetchRequest).first{
+                if let result = try taskContext.fetch(fetchRequest).first {
                     let game = FavouriteGameModel(id: result.value(forKeyPath: "id") as? Int32,
                                              name: result.value(forKeyPath: "name") as? String,
                                              descriptionRaw: result.value(forKeyPath: "descriptionRaw") as? String,
@@ -93,18 +92,28 @@ class FavouriteGameProvider {
         }
     }
     
-    func createFavouriteGame(_ id: Int32,_ name: String, _ descriptionRaw: String, _ metacritic: String, _ released: String, _ backgroundImage: URL?, _ developers: String, _ publishers: String, _ genres: String, _ rating: Float, _ backgroundImageDownloaded: Data, completion: @escaping() -> ()){
+    func createFavouriteGameFromAPI(game: GameDetail, completion: @escaping() -> Void) {
+        let id = Int32(game.id)
+        let name = game.name
+        let descriptionRaw = game.descriptionRaw
+        let metacritic = game.metacritic ?? ""
+        let released = game.released ?? ""
+        let backgroundImageURL = game.backgroundImage ?? URL(string: "")!
+        let rating = game.rating ?? 0
+        let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1) ?? Data()
+        let genres = game.genres.map{$0.name}.joined(separator: ",")
+        let developers = game.developers.map{ $0.name }.joined(separator: ",")
+        let publishers = game.publishers.map{ $0.name }.joined(separator: ",")
         let taskContext = newTaskContext()
         taskContext.performAndWait {
             if let entity = NSEntityDescription.entity(forEntityName: "FavouriteGame", in: taskContext) {
                 let game = NSManagedObject(entity: entity, insertInto: taskContext)
-                
                     game.setValue(id, forKeyPath: "id")
                     game.setValue(name, forKeyPath: "name")
                     game.setValue(descriptionRaw, forKeyPath: "descriptionRaw")
                     game.setValue(metacritic, forKeyPath: "metacritic")
                     game.setValue(released, forKeyPath: "released")
-                    game.setValue(backgroundImage, forKeyPath: "backgroundImage")
+                    game.setValue(backgroundImageURL, forKeyPath: "backgroundImage")
                     game.setValue(developers, forKeyPath: "developers")
                     game.setValue(publishers, forKeyPath: "publishers")
                     game.setValue(genres, forKeyPath: "genres")
@@ -117,12 +126,46 @@ class FavouriteGameProvider {
                     } catch let error as NSError {
                         print("Could not save. \(error), \(error.userInfo)")
                     }
-                
             }
         }
     }
-    
-    func deleteFavouriteGame(_ id: Int, completion: @escaping() -> ()){
+    func createFavouriteGameFromDB(game: FavouriteGameModel, completion: @escaping() -> Void ){
+        let id = game.id ?? 0
+        let name = game.name ?? ""
+        let descriptionRaw =  game.descriptionRaw ?? ""
+        let metacritic = game.metacritic ?? ""
+        let publishers = game.publishers ?? ""
+        let genres = game.genres ?? ""
+        let developers = game.developers ?? ""
+        let released = game.released ?? ""
+        let rating = game.rating ?? 0
+        let backgroundImageURL = game.backgroundImage ?? URL(string: "")!
+        let backgroundImageDownloaded = game.backgroundImageDownloaded ?? Data()
+        let taskContext = newTaskContext()
+        taskContext.performAndWait {
+            if let entity = NSEntityDescription.entity(forEntityName: "FavouriteGame", in: taskContext) {
+                let game = NSManagedObject(entity: entity, insertInto: taskContext)
+                    game.setValue(id, forKeyPath: "id")
+                    game.setValue(name, forKeyPath: "name")
+                    game.setValue(descriptionRaw, forKeyPath: "descriptionRaw")
+                    game.setValue(metacritic, forKeyPath: "metacritic")
+                    game.setValue(released, forKeyPath: "released")
+                    game.setValue(backgroundImageURL, forKeyPath: "backgroundImage")
+                    game.setValue(developers, forKeyPath: "developers")
+                    game.setValue(publishers, forKeyPath: "publishers")
+                    game.setValue(genres, forKeyPath: "genres")
+                    game.setValue(rating, forKeyPath: "rating")
+                    game.setValue(backgroundImageDownloaded, forKeyPath: "backgroundImageDownloaded")
+                    do {
+                        try taskContext.save()
+                        completion()
+                    } catch let error as NSError {
+                        print("Could not save. \(error), \(error.userInfo)")
+                    }
+            }
+        }
+    }
+    func deleteFavouriteGame(_ id: Int, completion: @escaping() -> Void) {
         let taskContext = newTaskContext()
         taskContext.perform {
             let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FavouriteGame")
@@ -139,5 +182,4 @@ class FavouriteGameProvider {
             }
         }
     }
-    
 }

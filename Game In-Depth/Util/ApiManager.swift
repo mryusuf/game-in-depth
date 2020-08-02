@@ -11,7 +11,6 @@ import UIKit
 class ApiManager {
     fileprivate let baseURL = "https://api.rawg.io"
     static let shared = ApiManager()
-    
     func fetchPopularGames(completionHandler: @escaping ([Game]?) -> Void) {
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games"
@@ -19,10 +18,8 @@ class ApiManager {
             URLQueryItem(name: "dates", value: "2020-01-01,2020-07-01"),
             URLQueryItem(name: "ordering", value: "-added"),
             URLQueryItem(name: "page_size", value: "5")
-            
         ]
         let request = URLRequest(url: components.url!)
-        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
@@ -33,19 +30,14 @@ class ApiManager {
                 let decoder = JSONDecoder()
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
-                    
                     completionHandler(fetchedGames.results)
-                    
-                } catch  {
+                } catch {
                     print(error.localizedDescription)
                 }
-                
-                
             }
         }
         dataTask.resume()
     }
-    
     func fetchAnticipatedGames(pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games"
@@ -55,9 +47,7 @@ class ApiManager {
             URLQueryItem(name: "page_size", value: pageSize.description),
             URLQueryItem(name: "page", value: page.description)
         ]
-        
         let request = URLRequest(url: components.url!)
-        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
@@ -68,19 +58,14 @@ class ApiManager {
                 let decoder = JSONDecoder()
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
-                    
                     completionHandler(fetchedGames)
-                    
-                } catch  {
+                } catch {
                     print(error.localizedDescription)
                 }
-                
-                
             }
         }
         dataTask.resume()
     }
-    
     func fetchHighestRatedGames(pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games"
@@ -88,11 +73,8 @@ class ApiManager {
             URLQueryItem(name: "ordering", value: "--rating"),
             URLQueryItem(name: "page_size", value: pageSize.description),
             URLQueryItem(name: "page", value: page.description)
-            
         ]
-        
         let request = URLRequest(url: components.url!)
-        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
@@ -103,22 +85,16 @@ class ApiManager {
                 let decoder = JSONDecoder()
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
-                    
                     completionHandler(fetchedGames)
-                    
-                } catch  {
+                } catch {
                     print(error.localizedDescription)
                 }
-                
-                
             }
         }
         dataTask.resume()
     }
-    
     func fetchImagePoster(imageURL: URL, completionHandler: @escaping (Data?) -> Void) {
         let session = URLSession.shared
-        
         let dataTask = session.dataTask(with: imageURL) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
@@ -130,13 +106,10 @@ class ApiManager {
         }
         dataTask.resume()
     }
-    
-    
     func fetchDetailGames(id: Int, completionHandler: @escaping (GameDetail?) -> Void) {
         var components = URLComponents(string: baseURL)!
         components.path = "/api/games/\(String(id))"
         let request = URLRequest(url: components.url!)
-        
         let session = URLSession.shared
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
@@ -147,20 +120,15 @@ class ApiManager {
                 let decoder = JSONDecoder()
                 do {
                     let fetchedGame = try decoder.decode(GameDetail.self, from: data)
-                    
                     completionHandler(fetchedGame)
-                    
-                } catch  {
+                } catch {
                     print(error.localizedDescription)
                 }
-                
-                
             }
         }
         dataTask.resume()
     }
-    
-    func fetchSearchGames(stop:Bool = false,query: String, pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
+    func fetchSearchGames(stop: Bool = false, query: String, pageSize: Int, page: Int = 1, completionHandler: @escaping (Games?) -> Void) {
             var components = URLComponents(string: baseURL)!
             components.path = "/api/games"
             components.queryItems = [
@@ -168,9 +136,7 @@ class ApiManager {
                 URLQueryItem(name: "page_size", value: pageSize.description),
                 URLQueryItem(name: "page", value: page.description)
             ]
-            
             let request = URLRequest(url: components.url!)
-            
             let session = URLSession.shared
             let dataTask = session.dataTask(with: request) { (data, response, error) in
                 guard let response = response as? HTTPURLResponse, let data = data else { return }
@@ -181,14 +147,10 @@ class ApiManager {
                     let decoder = JSONDecoder()
                     do {
                         let fetchedGames = try decoder.decode(Games.self, from: data)
-                        
                         completionHandler(fetchedGames)
-                        
-                    } catch  {
+                    } catch {
                         print(error.localizedDescription)
                     }
-                    
-                    
                 }
             }
         if !stop {

@@ -17,14 +17,12 @@ class ViewController: UIViewController {
     @IBOutlet weak var topMoreButton: UIButton!
     @IBOutlet weak var homeScrollView: UIScrollView!
     let loadingIndicatorView = UIActivityIndicatorView(style: .large)
-    
     var mainBannerGames: [Game] = []
     var topGames: [Game] = []
     var upcomingGames: [Game] = []
     var mainBannerPosters = [String: UIImage]()
     var topPosters = [String: UIImage]()
     var upcommingPosters = [String: UIImage]()
-    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         self.title = "Popular Games"
@@ -41,7 +39,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        ApiManager.shared.fetchAnticipatedGames(pageSize: 5){ (fetchedGames) in
+        ApiManager.shared.fetchAnticipatedGames(pageSize: 5) { (fetchedGames) in
             if let fetchedGames = fetchedGames?.results {
                 self.upcomingGames = fetchedGames
                 DispatchQueue.main.async {
@@ -51,7 +49,7 @@ class ViewController: UIViewController {
                 }
             }
         }
-        ApiManager.shared.fetchHighestRatedGames(pageSize: 5){ (fetchedGames) in
+        ApiManager.shared.fetchHighestRatedGames(pageSize: 5) { (fetchedGames) in
             if let fetchedGames = fetchedGames?.results {
                 self.topGames = fetchedGames
                 DispatchQueue.main.async {
@@ -75,22 +73,17 @@ class ViewController: UIViewController {
         mainBannerCollectionView.delegate = self
         mainBannerCollectionView.dataSource = self
         mainBannerCollectionView.tag = HomeCollectionViewTag.mainBanner.rawValue
-        
         upcomingGamesCollectionView.delegate = self
         upcomingGamesCollectionView.dataSource = self
         upcomingGamesCollectionView.tag = HomeCollectionViewTag.upcommingBanner.rawValue
-        
         topGamesCollectionView.delegate = self
         topGamesCollectionView.dataSource = self
         topGamesCollectionView.tag = HomeCollectionViewTag.topBanner.rawValue
-        
         let mainBannerNib = UINib(nibName: "MainBannerCollectionViewCell", bundle: nil)
-        let subBannerNib = UINib(nibName: "subBannerCollectionViewCell", bundle: nil)
-        
+        let subBannerNib = UINib(nibName: "SubBannerCollectionViewCell", bundle: nil)
         mainBannerCollectionView.register(mainBannerNib, forCellWithReuseIdentifier: "MainBannerCellIdentifier")
-        upcomingGamesCollectionView.register(subBannerNib, forCellWithReuseIdentifier: "subBannerCellIdentifier")
-        topGamesCollectionView.register(subBannerNib, forCellWithReuseIdentifier: "subBannerCellIdentifier")
-        
+        upcomingGamesCollectionView.register(subBannerNib, forCellWithReuseIdentifier: "SubBannerCellIdentifier")
+        topGamesCollectionView.register(subBannerNib, forCellWithReuseIdentifier: "SubBannerCellIdentifier")
         upcomingMoreButton.addTarget(self, action: #selector(upcomingMoreButtonTapped), for: .touchUpInside)
         topMoreButton.addTarget(self, action: #selector(topMoreButtonTapped), for: .touchUpInside)
     }
@@ -127,7 +120,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
             return mainBannerGames.count
@@ -139,7 +131,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             return 0
         }
     }
-    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "MainBannerCellIdentifier", for: indexPath) as? MainBannerCollectionViewCell
@@ -176,7 +167,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             }
             return cell ?? UICollectionViewCell()
         } else  if collectionView.tag == HomeCollectionViewTag.upcommingBanner.rawValue {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "subBannerCellIdentifier", for: indexPath) as? subBannerCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SubBannerCellIdentifier", for: indexPath) as? SubBannerCollectionViewCell
             let game = upcomingGames[indexPath.row]
             cell?.subPosterImageView.image = upcommingPosters[game.name]
             cell?.nameLabel.text = game.name
@@ -213,7 +204,7 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
             }
             return cell ?? UICollectionViewCell()
         } else  if collectionView.tag == HomeCollectionViewTag.topBanner.rawValue {
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "subBannerCellIdentifier", for: indexPath) as? subBannerCollectionViewCell
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "SubBannerCellIdentifier", for: indexPath) as? SubBannerCollectionViewCell
             let game = topGames[indexPath.row]
             cell?.subPosterImageView.image = topPosters[game.name]
             cell?.nameLabel.text = game.name
