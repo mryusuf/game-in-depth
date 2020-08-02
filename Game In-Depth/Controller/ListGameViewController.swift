@@ -113,7 +113,7 @@ extension ListGameViewController: UICollectionViewDelegate, UICollectionViewData
         vc?.detailPosterImage = gamePosters[game?.name ?? ""] ?? UIImage()
         
         
-        vc?.gameID = game?.id ?? 0
+        vc?.gameId = game?.id ?? 0
         if let vc = vc {
             self.navigationController?.pushViewController(vc, animated: true)
         }

@@ -97,25 +97,25 @@ class ViewController: UIViewController {
 
     @objc func upcomingMoreButtonTapped() {
         self.title = "Back"
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController
-        vc?.gameType = .upcoming
-        vc?.title = "Upcoming Games"
-        if let vc = vc {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController {
+            vc.gameType = .upcoming
+            vc.title = "Upcoming Games"
+            vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     
     @objc func topMoreButtonTapped() {
         self.title = "Back"
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController
-        vc?.gameType = .topRated
-        vc?.title = "Top Games"
-        if let vc = vc {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController {
+            vc.gameType = .topRated
+            vc.title = "Top Games"
+            vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
     func showLoadingIndicator() {
-        loadingIndicatorView.center = self.view.center
+        loadingIndicatorView.center = CGPoint(x: self.view.bounds.size.width / 2, y: self.view.bounds.height / 2)
         loadingIndicatorView.color = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         loadingIndicatorView.hidesWhenStopped = true
         self.view.addSubview(loadingIndicatorView)
@@ -257,24 +257,24 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
-        var game: Game?
-        if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
-            game = mainBannerGames[indexPath.row]
-            vc?.detailPosterImage = mainBannerPosters[game?.name ?? ""] ?? UIImage()
-            
-        } else if collectionView.tag == HomeCollectionViewTag.upcommingBanner.rawValue {
-            game = upcomingGames[indexPath.row]
-            vc?.detailPosterImage = upcommingPosters[game?.name ?? ""] ?? UIImage()
-            
-        } else if collectionView.tag == HomeCollectionViewTag.topBanner.rawValue {
-            game = topGames[indexPath.row]
-            vc?.detailPosterImage = topPosters[game?.name ?? ""] ?? UIImage()
-            
-        }
-        self.title = "Back"
-        vc?.gameID = game?.id ?? 0
-        if let vc = vc {
+        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
+            var game: Game?
+            if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
+                game = mainBannerGames[indexPath.row]
+                vc.detailPosterImage = mainBannerPosters[game?.name ?? ""] ?? UIImage()
+                
+            } else if collectionView.tag == HomeCollectionViewTag.upcommingBanner.rawValue {
+                game = upcomingGames[indexPath.row]
+                vc.detailPosterImage = upcommingPosters[game?.name ?? ""] ?? UIImage()
+                
+            } else if collectionView.tag == HomeCollectionViewTag.topBanner.rawValue {
+                game = topGames[indexPath.row]
+                vc.detailPosterImage = topPosters[game?.name ?? ""] ?? UIImage()
+                
+            }
+            self.title = "Back"
+            vc.gameId = game?.id ?? 0
+            vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }

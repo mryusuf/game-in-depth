@@ -11,7 +11,7 @@ import UIKit
 struct GameDetail: Codable {
     let id: Int
     let name: String
-    let description_raw: String
+    let descriptionRaw: String
     let metacritic: String?
     let released: String?
     let backgroundImage: URL?
@@ -27,7 +27,7 @@ struct GameDetail: Codable {
         
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
-        description_raw = try container.decode(String.self, forKey: .description_raw)
+        descriptionRaw = try container.decode(String.self, forKey: .descriptionRaw)
         
         let backgroundImageString = try container.decodeIfPresent(String.self, forKey: .backgroundImage) ?? ""
         backgroundImage = URL(string: backgroundImageString)
@@ -47,8 +47,9 @@ struct GameDetail: Codable {
     }
     
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, description_raw, released, developers, publishers, genres, rating
+        case id, name, metacritic, released, developers, publishers, genres, rating
         case backgroundImage = "background_image"
+        case descriptionRaw = "description_raw"
     }
 }
 

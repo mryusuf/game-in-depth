@@ -27,11 +27,10 @@ class ApiManager {
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
-                print("error fetching image")
+                print("error fetching popular games")
                 completionHandler(nil)
             } else if response.statusCode == 200 {
                 let decoder = JSONDecoder()
-                print(data.debugDescription)
                 do {
                     let fetchedGames = try decoder.decode(Games.self, from: data)
                     
@@ -63,7 +62,7 @@ class ApiManager {
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
-                print("error fetching image")
+                print("error fetching anticipated games")
                 completionHandler(nil)
             } else if response.statusCode == 200 {
                 let decoder = JSONDecoder()
@@ -98,7 +97,7 @@ class ApiManager {
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
-                print("error fetching image")
+                print("error fetching highest rated games")
                 completionHandler(nil)
             } else if response.statusCode == 200 {
                 let decoder = JSONDecoder()
@@ -142,7 +141,7 @@ class ApiManager {
         let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse, let data = data else { return }
             if error != nil {
-                print("error fetching image")
+                print("error fetching detailGames")
                 completionHandler(nil)
             } else if response.statusCode == 200 {
                 let decoder = JSONDecoder()

@@ -110,7 +110,7 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
         vc?.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
         
         
-        vc?.gameID = game?.id ?? 0
+        vc?.gameId = game?.id ?? 0
         if let vc = vc {
             self.navigationController?.pushViewController(vc, animated: true)
         }
