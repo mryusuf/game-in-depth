@@ -182,4 +182,17 @@ class FavouriteGameProvider {
             }
         }
     }
+    func deleteAllFavouriteGame(completion: @escaping() -> Void) {
+        let taskContext = newTaskContext()
+        taskContext.perform {
+            let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: "FavouriteGame")
+            let batchDeleteRequest = NSBatchDeleteRequest(fetchRequest: fetchRequest)
+            batchDeleteRequest.resultType = .resultTypeCount
+            if let batchDeleteResult = try? taskContext.execute(batchDeleteRequest) as? NSBatchDeleteResult,
+                batchDeleteResult.result != nil {
+                print("All games deleted")
+                completion()
+            }
+        }
+    }
 }

@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SwiftUI
 
-class ViewController: UIViewController {
+class HomeViewController: UIViewController {
 
     @IBOutlet weak var mainBannerCollectionView: UICollectionView!
     @IBOutlet weak var upcomingGamesCollectionView: UICollectionView!
@@ -27,6 +28,8 @@ class ViewController: UIViewController {
         super.viewWillAppear(true)
         self.title = "Popular Games"
         self.navigationController?.hidesBarsOnSwipe = true
+        addAboutButton()
+        addNicknameLabel()
         showLoadingIndicator()
         homeScrollView.isHidden = true
         ApiManager.shared.fetchPopularGames { (fetchedGames) in
@@ -89,7 +92,6 @@ class ViewController: UIViewController {
     }
 
     @objc func upcomingMoreButtonTapped() {
-        self.title = "Back"
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController {
             vc.gameType = .upcoming
             vc.title = "Upcoming Games"
@@ -99,12 +101,35 @@ class ViewController: UIViewController {
     }
     
     @objc func topMoreButtonTapped() {
-        self.title = "Back"
         if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "ListGameViewController") as? ListGameViewController {
             vc.gameType = .topRated
             vc.title = "Top Games"
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+    @objc func aboutButtonTapped() {
+        let hostingController = UIHostingController(rootView: AboutView())
+        hostingController.view.backgroundColor = UIColor.black
+        hostingController.hidesBottomBarWhenPushed = true
+        self.navigationController?.pushViewController(hostingController, animated: true)
+    }
+    func addAboutButton() {
+        let aboutButton = UIButton(type: .custom)
+        aboutButton.setImage(UIImage(systemName: "info.circle"), for: .normal)
+        aboutButton.addTarget(self, action: #selector(aboutButtonTapped), for: .touchUpInside)
+        aboutButton.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: aboutButton)
+    }
+    func addNicknameLabel() {
+        if let nickname = UserDefaults.standard.object(forKey: "nickname") as? String, nickname != "" {
+            let nicknameLabel = UILabel()
+            nicknameLabel.text = "Hi, \(nickname)"
+            nicknameLabel.textColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
+            nicknameLabel.sizeToFit()
+            navigationItem.leftBarButtonItem = UIBarButtonItem(customView: nicknameLabel)
+        } else {
+            navigationItem.leftBarButtonItem = nil
         }
     }
     func showLoadingIndicator() {
@@ -116,7 +141,7 @@ class ViewController: UIViewController {
     }
 }
 
-extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
+extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1
     }
@@ -260,7 +285,6 @@ extension ViewController: UICollectionViewDelegate, UICollectionViewDataSource, 
                 vc.detailPosterImage = topPosters[game?.name ?? ""] ?? UIImage()
                 
             }
-            self.title = "Back"
             vc.gameId = game?.id ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
