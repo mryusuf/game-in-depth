@@ -107,6 +107,7 @@ extension BrowseGameViewController: UICollectionViewDelegate, UICollectionViewDa
             var game: Game?
             game = gameResults[indexPath.row]
             vc.detailPosterImage = gameResultPosters[game?.name ?? ""] ?? UIImage()
+            vc.hidesBottomBarWhenPushed = true
             vc.gameId = game?.id ?? 0
             self.navigationController?.pushViewController(vc, animated: true)
         }

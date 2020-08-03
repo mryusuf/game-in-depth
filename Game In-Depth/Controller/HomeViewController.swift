@@ -17,6 +17,7 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var upcomingMoreButton: UIButton!
     @IBOutlet weak var topMoreButton: UIButton!
     @IBOutlet weak var homeScrollView: UIScrollView!
+    @IBOutlet weak var mainBannerPageControl: UIPageControl!
     let loadingIndicatorView = UIActivityIndicatorView(style: .large)
     var mainBannerGames: [Game] = []
     var topGames: [Game] = []
@@ -147,6 +148,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
+            mainBannerPageControl.numberOfPages = mainBannerGames.count
             return mainBannerGames.count
         } else if collectionView.tag == HomeCollectionViewTag.upcommingBanner.rawValue {
             return upcomingGames.count
@@ -302,5 +304,10 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
             return CGSize(width: 180, height: 285)
         }
     }
-    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        mainBannerPageControl.currentPage = Int(
+            (mainBannerCollectionView.contentOffset.x / mainBannerCollectionView.frame.width)
+            .rounded(.toNearestOrAwayFromZero)
+        )
+    }
 }
