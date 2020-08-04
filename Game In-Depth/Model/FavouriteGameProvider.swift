@@ -98,7 +98,7 @@ class FavouriteGameProvider {
         let descriptionRaw = game.descriptionRaw
         let metacritic = game.metacritic ?? ""
         let released = game.released ?? ""
-        let backgroundImageURL = game.backgroundImage ?? URL(string: "")!
+        let backgroundImageURL = game.backgroundImage
         let rating = game.rating ?? 0
         let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1) ?? Data()
         let genres = game.genres.map {$0.name}.joined(separator: ",")
@@ -139,7 +139,7 @@ class FavouriteGameProvider {
         let developers = game.developers ?? ""
         let released = game.released ?? ""
         let rating = game.rating ?? 0
-        let backgroundImageURL = game.backgroundImage ?? URL(string: "")!
+        let backgroundImageURL = game.backgroundImage
         let backgroundImageDownloaded = game.backgroundImageDownloaded ?? Data()
         let taskContext = newTaskContext()
         taskContext.performAndWait {

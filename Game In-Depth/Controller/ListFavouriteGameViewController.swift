@@ -56,7 +56,7 @@ extension ListFavouriteGameViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if let id = favouriteGames[indexPath.row].id {
             let gameId = Int(id)
-            if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
+            if let vc = UIStoryboard(name: "DetailGameView", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
                 vc.detailPosterImage = UIImage()
                 vc.favouriteGameId = gameId
                 vc.isFromFavouriteList = true

@@ -107,7 +107,7 @@ class ListGameViewController: UIViewController {
 extension ListGameViewController: UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout, UICollectionViewDataSourcePrefetching {
    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
+        let vc = UIStoryboard(name: "DetailGameView", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController
         var game: Game?
         game = listGames[indexPath.row]
         vc?.detailPosterImage = gamePosters[game?.name ?? ""] ?? UIImage()

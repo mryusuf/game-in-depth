@@ -272,7 +272,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if let vc = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
+        if let vc = UIStoryboard(name: "DetailGameView", bundle: nil).instantiateViewController(withIdentifier: "DetailGameViewController") as? DetailGameViewController {
             var game: Game?
             if collectionView.tag == HomeCollectionViewTag.mainBanner.rawValue {
                 game = mainBannerGames[indexPath.row]
