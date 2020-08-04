@@ -227,21 +227,7 @@ extension UIStackView {
         let subView = UIView(frame: bounds)
         subView.backgroundColor = color
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-        subView.addBorder()
+//        subView.addBorder()
         insertSubview(subView, at: 0)
-    }
-}
-
-extension UIView {
-    func addBorder() {
-        let thickness: CGFloat = 1.0
-        let topBorder = CALayer()
-        let bottomBorder = CALayer()
-        topBorder.frame = CGRect(x: 0.0, y: 0.0, width: self.frame.size.width, height: thickness)
-        topBorder.backgroundColor = #colorLiteral(red: 0.9685322642, green: 0.9686941504, blue: 0.9685109258, alpha: 1)
-        bottomBorder.frame = CGRect(x: 0, y: self.frame.size.height - thickness, width: self.frame.size.width, height: thickness)
-        bottomBorder.backgroundColor = #colorLiteral(red: 0.968627451, green: 0.968627451, blue: 0.968627451, alpha: 1)
-        self.layer.addSublayer(topBorder)
-        self.layer.addSublayer(bottomBorder)
     }
 }
