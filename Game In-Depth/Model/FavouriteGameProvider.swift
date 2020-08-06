@@ -100,7 +100,7 @@ class FavouriteGameProvider {
         let released = game.released ?? ""
         let backgroundImageURL = game.backgroundImage
         let rating = game.rating ?? 0
-        let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1) ?? Data()
+        let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1)
         let genres = game.genres.map {$0.name}.joined(separator: ",")
         let developers = game.developers.map { $0.name }.joined(separator: ",")
         let publishers = game.publishers.map { $0.name }.joined(separator: ",")

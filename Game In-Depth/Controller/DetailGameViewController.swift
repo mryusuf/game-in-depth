@@ -29,6 +29,7 @@ class DetailGameViewController: UIViewController {
     var gameFav: FavouriteGameModel?
     var favouriteGameId: Int?
     var detailPosterImage = UIImage()
+    let dispatchGroup = DispatchGroup()
     var isFavourite = false {
         didSet {
             if isFavourite {
@@ -129,34 +130,37 @@ class DetailGameViewController: UIViewController {
         self.metascoreAndFavButtonStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         self.genreAndReleaseStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
         self.devAndPublishersStackView.addBackgroundAndBorderedView(color: #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0))
+        self.dispatchGroup.enter()
         if backgroundImage == Data() {
             self.detailLoading.startAnimating()
             if let backgroundImageURL = backgroundURL {
                 ApiManager.shared.fetchImagePoster(imageURL: backgroundImageURL) { (data) in
                     if let imageData = data {
-                        DispatchQueue.main.async {
-                            if let image = UIImage(data: imageData) {
+                            DispatchQueue.main.async {
+                                if let image = UIImage(data: imageData) {
+                                self.detailPosterImage = image
                                 self.detailLoading.stopAnimating()
-                                self.setImage(image)
+                                self.setImage()
                             }
                         }
                     } else {
                         print("Detail: error attaching image")
                         DispatchQueue.main.async {
-                            let image = UIImage(systemName: "nosign")!
+                            self.detailPosterImage = UIImage(systemName: "nosign")!
                             self.detailLoading.stopAnimating()
-                            self.setImage(image)
+                            self.setImage()
                         }
                     }
                 }
             } else {
-                let image = UIImage(systemName: "nosign")!
+                self.detailPosterImage = UIImage(systemName: "nosign")!
                 self.detailLoading.stopAnimating()
-                self.setImage(image)
+                self.setImage()
             }
         } else {
             if let image = UIImage(data: backgroundImage) {
-                self.setImage(image)
+                self.detailPosterImage = image
+                self.setImage()
             }
         }
     }
@@ -167,17 +171,26 @@ class DetailGameViewController: UIViewController {
         if !isFavourite {
             if !isFromFavouriteList, var game = gameDetail {
                 // From API-fetched GameDetail to Core Data
-                game.backgroundImageDownloaded = self.detailPosterImageView.image ?? UIImage()
-                favouriteGameProvider.createFavouriteGameFromAPI(game: game) {
-                    DispatchQueue.main.async {
-                        self.feedbackGenerator?.selectionChanged()
-                        let message = "Added to Favourite Games"
-                        self.presentAlert(message)
-                        self.isFavourite = true
+                
+                if let backgroundImage = self.detailPosterImageView.image {
+                    game.backgroundImageDownloaded = backgroundImage
+                    saveToCoreData(game)
+                } else {
+                    // Wait for download image if image is not yet downloaded
+                    let alertTitle = "Downloading image, please wait"
+                    let alert = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
+                    self.present(alert, animated: true, completion: nil)
+                    
+                    self.dispatchGroup.notify(queue: .main) {
+                        print("download done")
+                        alert.dismiss(animated: true, completion: nil)
+                        game.backgroundImageDownloaded = self.detailPosterImage
+                        self.saveToCoreData(game)
                     }
                 }
             } else if isFromFavouriteList, let game = gameFav {
-                // From FavouriteGame to Core Data, in case user view this page from FavouriteList Page -> defavourite -> favourite again
+                // From FavouriteGame to Core Data,
+                // in case user view this page from FavouriteList Page -> defavourite -> favourite again
                 favouriteGameProvider.createFavouriteGameFromDB(game: game) {
                     DispatchQueue.main.async {
                         self.feedbackGenerator?.selectionChanged()
@@ -206,11 +219,24 @@ class DetailGameViewController: UIViewController {
             }
         }
     }
-    func setImage(_ image: UIImage) {
-        let overlayView = UIView(frame: CGRect(x: 0, y: 0, width: self.detailPosterImageView.frame.size.width, height: self.detailPosterImageView.frame.size.height))
+    func saveToCoreData(_ game: GameDetail) {
+        favouriteGameProvider.createFavouriteGameFromAPI(game: game) {
+            DispatchQueue.main.async {
+                self.feedbackGenerator?.selectionChanged()
+                let message = "Added to Favourite Games"
+                self.presentAlert(message)
+                self.isFavourite = true
+            }
+        }
+    }
+    func setImage() {
+        self.dispatchGroup.leave()
+        let width = self.detailPosterImageView.frame.size.width
+        let height = self.detailPosterImageView.frame.size.height
+        let overlayView = UIView(frame: CGRect(x: 0, y: 0, width: width, height: height))
         overlayView.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.4)
         self.detailPosterImageView.addSubview(overlayView)
-        self.detailPosterImageView.image = image
+        self.detailPosterImageView.image = self.detailPosterImage
     }
     func presentAlert(_ message: String) {
         let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
@@ -227,7 +253,6 @@ extension UIStackView {
         let subView = UIView(frame: bounds)
         subView.backgroundColor = color
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-//        subView.addBorder()
         insertSubview(subView, at: 0)
     }
 }
