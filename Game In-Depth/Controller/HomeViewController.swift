@@ -287,7 +287,7 @@ extension HomeViewController: UICollectionViewDelegate, UICollectionViewDataSour
                 vc.detailPosterImage = topPosters[game?.name ?? ""] ?? UIImage()
                 
             }
-            vc.gameId = game?.id ?? 0
+            vc.gameId = game?.gameId ?? 0
             vc.hidesBottomBarWhenPushed = true
             self.navigationController?.pushViewController(vc, animated: true)
         }

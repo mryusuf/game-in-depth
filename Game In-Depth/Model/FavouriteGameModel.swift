@@ -9,7 +9,7 @@
 import Foundation
 
 struct FavouriteGameModel {
-    var id: Int32?
+    var gameId: Int32?
     var name: String?
     var descriptionRaw: String?
     var metacritic: String?

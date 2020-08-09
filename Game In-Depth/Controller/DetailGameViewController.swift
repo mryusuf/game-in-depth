@@ -100,10 +100,10 @@ class DetailGameViewController: UIViewController {
                         self.detailLoading.stopAnimating()
                         self.gameDetail = fetchedGameDetail
                         let metascore = "Metascore: \(fetchedGameDetail.metacritic!)"
-                        let genres = fetchedGameDetail.genres.map { $0.name }.joined(separator: ",")
-                        let developers = fetchedGameDetail.developers.map { $0.name }.joined(separator: ",")
-                        let publishers = fetchedGameDetail.publishers.map { $0.name }.joined(separator: ",")
-                        self.setupGameDetailViews(fetchedGameDetail.name, fetchedGameDetail.descriptionRaw, metascore, genres, developers,
+                        let genres = fetchedGameDetail.genres?.map { $0.name }.joined(separator: ",") ?? ""
+                        let developers = fetchedGameDetail.developers?.map { $0.name }.joined(separator: ",") ?? ""
+                        let publishers = fetchedGameDetail.publishers?.map { $0.name }.joined(separator: ",") ?? ""
+                        self.setupGameDetailViews(fetchedGameDetail.name, fetchedGameDetail.descriptionRaw ?? "", metascore, genres, developers,
                                                   publishers, fetchedGameDetail.released!, fetchedGameDetail.backgroundImage)
                     }
                 }
@@ -177,13 +177,16 @@ class DetailGameViewController: UIViewController {
                     saveToCoreData(game)
                 } else {
                     // Wait for download image if image is not yet downloaded
+                    self.favouriteButton.loadingIndicator(true)
                     let alertTitle = "Downloading image, please wait"
                     let alert = UIAlertController(title: alertTitle, message: "", preferredStyle: .alert)
                     self.present(alert, animated: true, completion: nil)
-                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        alert.dismiss(animated: true, completion: nil)
+                    }
                     self.dispatchGroup.notify(queue: .main) {
                         print("download done")
-                        alert.dismiss(animated: true, completion: nil)
+                        self.favouriteButton.loadingIndicator(false)
                         game.backgroundImageDownloaded = self.detailPosterImage
                         self.saveToCoreData(game)
                     }
@@ -204,9 +207,9 @@ class DetailGameViewController: UIViewController {
             // Delete game in Favourite (Core Data)
             var id = 0
             if !isFromFavouriteList, let game = gameDetail {
-                id = game.id
+                id = game.gameId
             } else if isFromFavouriteList, let game = gameFav {
-                id = Int("\(game.id ?? 0)")!
+                id = Int("\(game.gameId ?? 0)")!
             }
             print("Game id to delete: \(id)")
             favouriteGameProvider.deleteFavouriteGame(id) {
@@ -254,5 +257,30 @@ extension UIStackView {
         subView.backgroundColor = color
         subView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
         insertSubview(subView, at: 0)
+    }
+}
+extension UIButton {
+    func loadingIndicator(_ show: Bool) {
+        let tag = 808404
+        if show {
+            self.isEnabled = false
+            self.setImage(.none, for: .normal)
+            self.alpha = 0.5
+            let indicator = UIActivityIndicatorView()
+            let buttonHeight = self.bounds.size.height
+            let buttonWidth = self.bounds.size.width
+            indicator.center = CGPoint(x: buttonWidth/2, y: buttonHeight/2)
+            indicator.tag = tag
+            indicator.color = .black
+            self.addSubview(indicator)
+            indicator.startAnimating()
+        } else {
+            self.isEnabled = true
+            self.alpha = 1.0
+            if let indicator = self.viewWithTag(tag) as? UIActivityIndicatorView {
+                indicator.stopAnimating()
+                indicator.removeFromSuperview()
+            }
+        }
     }
 }

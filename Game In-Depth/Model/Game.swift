@@ -14,7 +14,7 @@ struct Games: Codable {
 }
 
 struct Game: Codable {
-    let id: Int
+    let gameId: Int
     let name: String
     let backgroundImage: URL?
     let metacritic: String?
@@ -27,7 +27,7 @@ struct Game: Codable {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         let backgroundImageString = try container.decodeIfPresent(String.self, forKey: .backgroundImage) ?? ""
         
-        id = try container.decode(Int.self, forKey: .id)
+        gameId = try container.decode(Int.self, forKey: .gameId)
         name = try container.decode(String.self, forKey: .name)
         backgroundImage = URL(string: backgroundImageString)
         // Use decodeIfPresent to prevent null error
@@ -44,8 +44,9 @@ struct Game: Codable {
     }
 
     enum CodingKeys: String, CodingKey {
-        case id, name, metacritic, released, rating
+        case name, metacritic, released, rating
         case backgroundImage = "background_image"
+        case gameId = "id"
     }
 }
 

@@ -41,7 +41,7 @@ class FavouriteGameProvider {
                 let results = try taskContext.fetch(fetchRequest)
                 var games: [FavouriteGameModel] = []
                 for result in results {
-                    let game = FavouriteGameModel(id: result.value(forKeyPath: "id") as? Int32,
+                    let game = FavouriteGameModel(gameId: result.value(forKeyPath: "id") as? Int32,
                                              name: result.value(forKeyPath: "name") as? String,
                                              descriptionRaw: result.value(forKeyPath: "descriptionRaw") as? String,
                                              metacritic: result.value(forKeyPath: "metacritic") as? String,
@@ -70,7 +70,7 @@ class FavouriteGameProvider {
             fetchRequest.predicate = NSPredicate(format: "id == \(id)")
             do {
                 if let result = try taskContext.fetch(fetchRequest).first {
-                    let game = FavouriteGameModel(id: result.value(forKeyPath: "id") as? Int32,
+                    let game = FavouriteGameModel(gameId: result.value(forKeyPath: "id") as? Int32,
                                              name: result.value(forKeyPath: "name") as? String,
                                              descriptionRaw: result.value(forKeyPath: "descriptionRaw") as? String,
                                              metacritic: result.value(forKeyPath: "metacritic") as? String,
@@ -93,7 +93,7 @@ class FavouriteGameProvider {
     }
     
     func createFavouriteGameFromAPI(game: GameDetail, completion: @escaping() -> Void) {
-        let id = Int32(game.id)
+        let id = Int32(game.gameId)
         let name = game.name
         let descriptionRaw = game.descriptionRaw
         let metacritic = game.metacritic ?? ""
@@ -101,9 +101,9 @@ class FavouriteGameProvider {
         let backgroundImageURL = game.backgroundImage
         let rating = game.rating ?? 0
         let backgroundImageDownloaded = game.backgroundImageDownloaded.jpegData(compressionQuality: 1)
-        let genres = game.genres.map {$0.name}.joined(separator: ",")
-        let developers = game.developers.map { $0.name }.joined(separator: ",")
-        let publishers = game.publishers.map { $0.name }.joined(separator: ",")
+        let genres = game.genres?.map {$0.name}.joined(separator: ",")
+        let developers = game.developers?.map { $0.name }.joined(separator: ",")
+        let publishers = game.publishers?.map { $0.name }.joined(separator: ",")
         let taskContext = newTaskContext()
         taskContext.performAndWait {
             if let entity = NSEntityDescription.entity(forEntityName: "FavouriteGame", in: taskContext) {
@@ -130,7 +130,7 @@ class FavouriteGameProvider {
         }
     }
     func createFavouriteGameFromDB(game: FavouriteGameModel, completion: @escaping() -> Void ) {
-        let id = game.id ?? 0
+        let id = game.gameId ?? 0
         let name = game.name ?? ""
         let descriptionRaw =  game.descriptionRaw ?? ""
         let metacritic = game.metacritic ?? ""
